@@ -206,6 +206,16 @@ class TinkerRevisionGraph(graphId: String) : AbstractRevisionGraph(graphId) {
             .toList()
     }
 
+    fun getLeafsFromVertex(vertex: Vertex): List<Vertex> {
+        return traversal().with(graph)
+            .V(vertex)
+            .repeat(`__`.outE(EdgeLabel.SUCCESSOR.name).inV())
+            .emit()
+            .hasLabel(REVISION)
+            .not(`__`.outE(EdgeLabel.SUCCESSOR.name))
+            .toList()
+    }
+
     override fun getRootRevision(): Vertex {
         return traversal().with(graph)
             .V()
@@ -280,12 +290,23 @@ class TinkerRevisionGraph(graphId: String) : AbstractRevisionGraph(graphId) {
             ).next()
     }
 
-    override fun getNeighbors(vertex: Vertex, recursionDepth: Int): List<Vertex> {
-        TODO("Not yet implemented")
+    override fun getNeighbors(vertex: Vertex, recursionDepth: Int): Set<Vertex> {
+        if (recursionDepth == 0) {
+            return setOf(vertex)
+        }
+        val nthPredecessor = getPathToRoot(vertex, recursionDepth).last()
+        return getLeafsFromVertex(nthPredecessor).toSet()
     }
 
     override fun validate(): Boolean {
         TODO("Not yet implemented")
+        //connectedness
+        //no cycles
+        //no dangling edges
+        //no dangling vertices
+        //only one incoming merge
+        //max two incoming successors
+        //only one root
     }
 
     companion object {

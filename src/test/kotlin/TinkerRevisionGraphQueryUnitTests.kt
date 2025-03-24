@@ -180,4 +180,45 @@ class TinkerRevisionGraphQueryUnitTests {
         assertEquals("a", revisionGraph.transform(path[1]).shortId)
     }
 
+    /**
+     *              /---> g --> p
+     * a --> b --> e --> f
+     * \---> c --> h ---\
+     *  \ ============== > j ---> k
+     *   \--> d --------/
+     */
+    @Test
+    fun getNeighbours0BoundedTest() {
+        val vertex = revisionGraph.getRevision("p")
+        val neighbours = revisionGraph.getNeighbors(vertex, 0)
+        assertEquals(1, neighbours.size)
+        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.contains("p"))
+    }
+
+    @Test
+    fun getNeighbours1BoundedTest() {
+        val vertex = revisionGraph.getRevision("p")
+        val neighbours = revisionGraph.getNeighbors(vertex, 1)
+        println(neighbours.map { revisionGraph.transform(it).shortId })
+        assertEquals(1, neighbours.size)
+        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.contains("p"))
+    }
+
+    @Test
+    fun getNeighbours2BoundedTest() {
+        val vertex = revisionGraph.getRevision("p")
+        val neighbours = revisionGraph.getNeighbors(vertex, 2)
+        assertEquals(2, neighbours.size)
+        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.containsAll(listOf("f", "p")))
+    }
+
+    @Test
+    fun getNeighboursUnboundedTest() {
+        val vertex = revisionGraph.getRevision("p")
+        val neighbours = revisionGraph.getNeighbors(vertex, -1)
+        println(neighbours.map { revisionGraph.transform(it).shortId })
+        assertEquals(3, neighbours.size)
+        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.containsAll(listOf("f", "k", "p")))
+    }
+
 }

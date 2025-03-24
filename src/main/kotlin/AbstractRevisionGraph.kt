@@ -49,7 +49,7 @@ abstract class AbstractRevisionGraph(val graphId: String) {
     abstract fun getLeafRevisions(): List<Vertex>
     abstract fun getRootRevision(): Vertex
     abstract fun getPathToRoot(vertex: Vertex, pathLength: Int): List<Vertex>
-    abstract fun getNeighbors(vertex: Vertex, recursionDepth: Int): List<Vertex>
+    abstract fun getNeighbors(vertex: Vertex, recursionDepth: Int): Set<Vertex>
 
     abstract fun validate(): Boolean
 
