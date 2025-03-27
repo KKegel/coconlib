@@ -16,10 +16,6 @@
 
 package cocontext
 
-import graphcore.VertexDescription
-
-data class ConsistencyContext(
-    val contextType: ConsistencyContextType,
-    val cardinality: Int,
-    val participants: Set<VertexDescription>
-)
+enum class ContextType {
+    SPACE, TIME, LINK, VOLATILE
+}

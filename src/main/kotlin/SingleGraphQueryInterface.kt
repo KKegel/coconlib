@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 
-import cocontext.ConsistencyContext
-import cocontext.ConsistencyContextType
+import cocontext.Context
+import cocontext.ContextType
 import graphcore.EdgeDescription
 import graphcore.VertexDescription
 
 interface SingleGraphQueryInterface {
 
-    fun findContextByShortId(revisionShortId: String, contextType: ConsistencyContextType, depth: Int): ConsistencyContext
+    fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context
 
-    fun findContextByLongId(revisionLongId: String, contextType: ConsistencyContextType, depth: Int): ConsistencyContext
+    fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context
 
     fun getRevisions(): List<VertexDescription>
 

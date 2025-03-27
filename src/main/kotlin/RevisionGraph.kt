@@ -19,7 +19,7 @@ import graphcore.VertexDescription
 import org.apache.tinkerpop.gremlin.structure.Edge
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
-abstract class AbstractRevisionGraph(val graphId: String) {
+abstract class RevisionGraph(val graphId: String) {
 
     abstract fun hasRevision(vertex: VertexDescription): Boolean
     abstract fun hasEdge(edge: EdgeDescription): Boolean
@@ -51,7 +51,7 @@ abstract class AbstractRevisionGraph(val graphId: String) {
     abstract fun getPathToRoot(vertex: Vertex, pathLength: Int): List<Vertex>
     abstract fun getNeighbors(vertex: Vertex, recursionDepth: Int): Set<Vertex>
 
-    abstract fun validate(): Boolean
+    abstract fun validate(depth: Int = 7): Boolean
 
     companion object {
         const val REVISION = "revision"

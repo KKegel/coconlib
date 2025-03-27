@@ -26,7 +26,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph
 import org.apache.tinkerpop.gremlin.structure.Vertex
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph
 
-class TinkerRevisionGraph(graphId: String) : AbstractRevisionGraph(graphId) {
+class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
 
     val graph: Graph = TinkerGraph.open()
 
@@ -298,15 +298,156 @@ class TinkerRevisionGraph(graphId: String) : AbstractRevisionGraph(graphId) {
         return getLeafsFromVertex(nthPredecessor).toSet()
     }
 
-    override fun validate(): Boolean {
-        TODO("Not yet implemented")
-        //connectedness
-        //no cycles
-        //no dangling edges
-        //no dangling vertices
-        //only one incoming merge
-        //max two incoming successors
-        //only one root
+    fun isConnected(): Boolean {
+        val root = getRootRevision()
+        return traversal().with(graph)
+            .V(root)
+            .repeat(`__`.outE(EdgeLabel.SUCCESSOR.name).inV())
+            .emit()
+            .hasLabel(REVISION)
+            .count()
+            .next() == graph.traversal().V().count().next()
+    }
+
+    fun hasOnlyOneRoot(): Boolean {
+        return traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .not(`__`.inE(EdgeLabel.SUCCESSOR.name))
+            .count()
+            .next() == 1L
+    }
+
+    fun noDanglingEdges(): Boolean {
+        return traversal().with(graph)
+            .E()
+            .not(`__`.outV().hasLabel(REVISION))
+            .count()
+            .next() == 0L
+    }
+
+    fun hasCycles(depth: Int): Boolean {
+        val allVertices = traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .toList()
+
+        for (vertex in allVertices) {
+            val paths = traversal().with(graph)
+                .V(vertex)
+                .repeat(`__`.outE(EdgeLabel.SUCCESSOR.name, EdgeLabel.MERGE.name).inV())
+                .times(depth)
+                .path()
+                .toList()
+            for (path in paths) {
+                val cycle = path.filter { it == vertex }
+                if (cycle.size > 1) {
+                    println(path)
+                    return true
+                }
+            }
+
+        }
+        return false
+    }
+
+    fun getDirectSuccessors(vertex: Vertex): List<Vertex> {
+        return traversal().with(graph)
+            .V(vertex)
+            .out(EdgeLabel.SUCCESSOR.name)
+            .toList()
+    }
+
+    fun maxTwoIncomingSuccessors(): Boolean {
+        val allVertices = traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .toList()
+
+        for (vertex in allVertices) {
+            val incomingEdges = traversal().with(graph)
+                .V(vertex)
+                .inE(EdgeLabel.SUCCESSOR.name)
+                .count()
+                .next()
+            if (incomingEdges > 2) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun maxTwoOutgoingSuccessors(): Boolean {
+        val allVertices = traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .toList()
+
+        for (vertex in allVertices) {
+            val outgoingEdges = traversal().with(graph)
+                .V(vertex)
+                .outE(EdgeLabel.SUCCESSOR.name)
+                .count()
+                .next()
+            if (outgoingEdges > 2) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun maxOneIncomingMerge(): Boolean {
+        val allVertices = traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .toList()
+
+        for (vertex in allVertices) {
+            val incomingEdges = traversal().with(graph)
+                .V(vertex)
+                .inE(EdgeLabel.MERGE.name)
+                .count()
+                .next()
+            if (incomingEdges > 1) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun maxOneOutgoingMerge(): Boolean {
+        val allVertices = traversal().with(graph)
+            .V()
+            .hasLabel(REVISION)
+            .toList()
+
+        for (vertex in allVertices) {
+            val outgoingEdges = traversal().with(graph)
+                .V(vertex)
+                .outE(EdgeLabel.MERGE.name)
+                .count()
+                .next()
+            if (outgoingEdges > 1) {
+                return false
+            }
+        }
+        return true
+    }
+
+    override fun validate(depth: Int): Boolean {
+
+        if (!hasOnlyOneRoot()) throw IllegalStateException("Graph has more than one root")
+        if (!isConnected()) throw IllegalStateException("Graph has dangling nodes")
+        if (!noDanglingEdges()) throw IllegalStateException("Graph has dangling edges")
+
+        if (!maxTwoIncomingSuccessors()) throw IllegalStateException("Vertex has more than two incoming successors")
+        if (!maxTwoOutgoingSuccessors()) throw IllegalStateException("Vertex has more than two outgoing successors")
+        if (!maxOneIncomingMerge()) throw IllegalStateException("Vertex has more than one incoming merge edge")
+        if (!maxOneOutgoingMerge()) throw IllegalStateException("Vertex has more than one outgoing merge edge")
+
+        if (hasCycles(depth)) throw IllegalStateException("Graph has cycles within depth $depth")
+
+        return true
     }
 
     companion object {
@@ -337,7 +478,13 @@ class TinkerRevisionGraph(graphId: String) : AbstractRevisionGraph(graphId) {
         }
 
         fun toDescription(graph: TinkerRevisionGraph): String {
-            TODO("Not yet implemented")
+            val vertices = graph.getRevisions()
+            val edges = graph.getEdges()
+            return GraphDescription(
+                graph.graphId,
+                vertices,
+                edges
+            ).serialize()
         }
 
     }

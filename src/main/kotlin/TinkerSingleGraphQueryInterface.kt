@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import cocontext.ConsistencyContext
-import cocontext.ConsistencyContextType
+import cocontext.Context
+import cocontext.ContextType
 import graphcore.EdgeDescription
 import graphcore.VertexDescription
 
@@ -23,17 +23,17 @@ class TinkerSingleGraphQueryInterface(val revisionGraph: TinkerRevisionGraph) : 
 
     override fun findContextByShortId(
         revisionShortId: String,
-        contextType: ConsistencyContextType,
+        contextType: ContextType,
         depth: Int
-    ): ConsistencyContext {
+    ): Context {
         TODO("Not yet implemented")
     }
 
     override fun findContextByLongId(
         revisionLongId: String,
-        contextType: ConsistencyContextType,
+        contextType: ContextType,
         depth: Int
-    ): ConsistencyContext {
+    ): Context {
         TODO("Not yet implemented")
     }
 
