@@ -14,19 +14,8 @@
  *  limitations under the License.
  */
 
-import cocontext.Context
-import cocontext.ContextType
-import graphcore.EdgeDescription
-import graphcore.VertexDescription
+package context
 
-interface SingleGraphQueryInterface {
-
-    fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context
-
-    fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context
-
-    fun getRevisions(): List<VertexDescription>
-
-    fun getEdges(): List<EdgeDescription>
-
+enum class ContextType {
+    SPACE, TIME, LINK, VOLATILE
 }

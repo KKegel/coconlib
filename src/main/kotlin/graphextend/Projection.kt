@@ -14,8 +14,7 @@
  *  limitations under the License.
  */
 
-package cocontext
+package graphextend
 
-enum class ContextType {
-    SPACE, TIME, LINK, VOLATILE
+class Projection {
 }

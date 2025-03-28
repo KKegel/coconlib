@@ -14,12 +14,21 @@
  *  limitations under the License.
  */
 
-package cocontext
-
+import context.Context
+import context.ContextType
+import graphcore.EdgeDescription
 import graphcore.VertexDescription
 
-data class Context(
-    val contextType: ContextType,
-    val cardinality: Int,
-    val participants: Set<VertexDescription>
-)
+interface SingleInterface {
+
+    fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context
+
+    fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context
+
+    fun getRevisions(): List<VertexDescription>
+
+    fun getEdges(): List<EdgeDescription>
+
+    fun getRoot(): VertexDescription
+
+}

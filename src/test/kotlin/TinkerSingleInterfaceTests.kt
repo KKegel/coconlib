@@ -14,7 +14,5 @@
  *  limitations under the License.
  */
 
-package graphextend
-
-class View {
+class TinkerSingleInterfaceTests {
 }

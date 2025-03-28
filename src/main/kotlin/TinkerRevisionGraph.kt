@@ -278,6 +278,13 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             .next()
     }
 
+    override fun getRevisionByLongId(longId: String): Vertex {
+        return traversal().with(graph)
+            .V()
+            .has("longId", longId)
+            .next()
+    }
+
     override fun getEdge(sourceShortId: String, targetShortId: String): Edge {
         return traversal().with(graph)
             .E()

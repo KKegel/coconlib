@@ -25,6 +25,7 @@ abstract class RevisionGraph(val graphId: String) {
     abstract fun hasEdge(edge: EdgeDescription): Boolean
 
     abstract fun getRevision(shortId: String): Vertex
+    abstract fun getRevisionByLongId(longId: String): Vertex
     abstract fun getEdge(sourceShortId: String, targetShortId: String): Edge
 
     abstract fun addRevision(vertex: VertexDescription)
