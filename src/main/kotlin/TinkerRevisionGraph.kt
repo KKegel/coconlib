@@ -434,6 +434,16 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return true
     }
 
+    override fun toDescription(): GraphDescription {
+        val vertices = getRevisions()
+        val edges = getEdges()
+        return GraphDescription(
+            graphId,
+            vertices,
+            edges
+        )
+    }
+
     companion object {
 
         fun inverseEdge(label: String): String {
@@ -461,15 +471,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             return revisionGraph
         }
 
-        fun toDescription(graph: TinkerRevisionGraph): String {
-            val vertices = graph.getRevisions()
-            val edges = graph.getEdges()
-            return GraphDescription(
-                graph.graphId,
-                vertices,
-                edges
-            ).serialize()
-        }
+
 
     }
 

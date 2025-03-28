@@ -20,9 +20,9 @@ import graphcore.EdgeDescription
 import graphcore.VertexDescription
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
-class TinkerSingleInterface(val revisionGraph: TinkerRevisionGraph) : SingleInterface {
+class GraphQueryInterface(val revisionGraph: RevisionGraph) {
 
-    override fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context {
+    fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context {
         var vertex: Vertex
         try {
             vertex = revisionGraph.getRevision(revisionShortId)
@@ -33,7 +33,7 @@ class TinkerSingleInterface(val revisionGraph: TinkerRevisionGraph) : SingleInte
         return findContext(vertex, contextType, depth)
     }
 
-    override fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context {
+    fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context {
         var vertex: Vertex
         try {
             vertex = revisionGraph.getRevisionByLongId(revisionLongId)
@@ -85,15 +85,15 @@ class TinkerSingleInterface(val revisionGraph: TinkerRevisionGraph) : SingleInte
         )
     }
 
-    override fun getRevisions(): List<VertexDescription> {
+    fun getRevisions(): List<VertexDescription> {
         return revisionGraph.getRevisions()
     }
 
-    override fun getEdges(): List<EdgeDescription> {
+    fun getEdges(): List<EdgeDescription> {
         return revisionGraph.getEdges()
     }
 
-    override fun getRoot(): VertexDescription {
+    fun getRoot(): VertexDescription {
         return revisionGraph.transform(revisionGraph.getRootRevision())
     }
 }

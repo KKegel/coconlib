@@ -16,5 +16,27 @@
 
 package graphextend
 
-class Projection {
+data class Projection(val projectionId: String, val sources: List<String>, val targets: List<String>) {
+
+    fun serialize(): String {
+        return serialize(this)
+    }
+
+    companion object {
+
+        fun serialize(projection: Projection): String {
+            return "P;${projection.projectionId};${projection.sources.joinToString(",")};${projection.targets.joinToString(",")}"
+        }
+
+        fun parse(serialized: String): Projection {
+            assert(serialized.startsWith("P;")) { "Serialized string must have PROJECTION format" }
+            assert(serialized.count { it == ';' } == 4) { "Serialized string must have 4 entries" }
+
+            val parts = serialized.split(";")
+            val sources = parts[2].split(",").map { it.trim() }
+            val targets = parts[3].split(",").map { it.trim() }
+            return Projection(parts[1], sources, targets)
+        }
+    }
+
 }

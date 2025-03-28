@@ -16,7 +16,7 @@
 
 package graphextend
 
-data class ConsistencyLink(
+data class CrossLink(
     val fromGraph: String,
     val toGraph: String,
     val fromRevision: String,
@@ -30,17 +30,17 @@ data class ConsistencyLink(
 
     companion object {
 
-        fun serialize(consistencyLink: ConsistencyLink): String {
+        fun serialize(consistencyLink: CrossLink): String {
             return "L;${consistencyLink.fromGraph};${consistencyLink.toGraph};" +
                     "${consistencyLink.fromRevision};${consistencyLink.toRevision};${consistencyLink.payload}"
         }
 
-        fun parse(serialized: String): ConsistencyLink {
+        fun parse(serialized: String): CrossLink {
             assert(serialized.startsWith("L;")) { "Serialized string must have LINK format" }
             assert(serialized.count { it == ';' } == 5) { "Serialized string must have 5 entries" }
 
             val parts = serialized.split(";")
-            return ConsistencyLink(parts[1], parts[2], parts[3], parts[4], parts[5])
+            return CrossLink(parts[1], parts[2], parts[3], parts[4], parts[5])
         }
 
     }

@@ -15,6 +15,7 @@
  */
 
 import graphcore.EdgeDescription
+import graphcore.GraphDescription
 import graphcore.VertexDescription
 import org.apache.tinkerpop.gremlin.structure.Edge
 import org.apache.tinkerpop.gremlin.structure.Vertex
@@ -53,6 +54,8 @@ abstract class RevisionGraph(val graphId: String) {
     abstract fun getNeighbors(vertex: Vertex, recursionDepth: Int): Set<Vertex>
 
     abstract fun validate(depth: Int = 7): Boolean
+
+    abstract fun toDescription(): GraphDescription
 
     companion object {
         const val REVISION = "revision"
