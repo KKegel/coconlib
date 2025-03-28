@@ -298,32 +298,14 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return getLeafsFromVertex(nthPredecessor).toSet()
     }
 
-    fun isConnected(): Boolean {
-        val root = getRootRevision()
-        return traversal().with(graph)
-            .V(root)
-            .repeat(`__`.outE(EdgeLabel.SUCCESSOR.name).inV())
-            .emit()
-            .hasLabel(REVISION)
-            .count()
-            .next() == graph.traversal().V().count().next()
-    }
-
     fun hasOnlyOneRoot(): Boolean {
-        return traversal().with(graph)
+        val rootVertices = traversal().with(graph)
             .V()
             .hasLabel(REVISION)
             .not(`__`.inE(EdgeLabel.SUCCESSOR.name))
-            .count()
-            .next() == 1L
-    }
-
-    fun noDanglingEdges(): Boolean {
-        return traversal().with(graph)
-            .E()
-            .not(`__`.outV().hasLabel(REVISION))
-            .count()
-            .next() == 0L
+            .toList()
+        println(rootVertices.map { it.property<String>(id).value() })
+        return rootVertices.size == 1
     }
 
     fun hasCycles(depth: Int): Boolean {
@@ -377,25 +359,6 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return true
     }
 
-    fun maxTwoOutgoingSuccessors(): Boolean {
-        val allVertices = traversal().with(graph)
-            .V()
-            .hasLabel(REVISION)
-            .toList()
-
-        for (vertex in allVertices) {
-            val outgoingEdges = traversal().with(graph)
-                .V(vertex)
-                .outE(EdgeLabel.SUCCESSOR.name)
-                .count()
-                .next()
-            if (outgoingEdges > 2) {
-                return false
-            }
-        }
-        return true
-    }
-
     fun maxOneIncomingMerge(): Boolean {
         val allVertices = traversal().with(graph)
             .V()
@@ -415,37 +378,51 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return true
     }
 
-    fun maxOneOutgoingMerge(): Boolean {
+    fun twoIncomingSuccessorsRequiresMerge(): Boolean {
         val allVertices = traversal().with(graph)
             .V()
             .hasLabel(REVISION)
             .toList()
 
         for (vertex in allVertices) {
-            val outgoingEdges = traversal().with(graph)
+            val incomingSuccessorEdges = traversal().with(graph)
                 .V(vertex)
-                .outE(EdgeLabel.MERGE.name)
+                .inE(EdgeLabel.SUCCESSOR.name)
                 .count()
                 .next()
-            if (outgoingEdges > 1) {
-                return false
+            if (incomingSuccessorEdges == 2L) {
+                val incomingMergeEdges = traversal().with(graph)
+                    .V(vertex)
+                    .inE(EdgeLabel.MERGE.name)
+                    .count()
+                    .next()
+                return incomingMergeEdges == 1L
             }
         }
         return true
     }
 
+    /**
+     * Validates the graph for the following conditions:
+     * - Graph has only one root
+     * - Graph has no cycles
+     * - A vertex with two incoming successors must have a merge edge
+     *
+     * @param depth the maximum path length to check for cycles
+     */
     override fun validate(depth: Int): Boolean {
 
         if (!hasOnlyOneRoot()) throw IllegalStateException("Graph has more than one root")
-        if (!isConnected()) throw IllegalStateException("Graph has dangling nodes")
-        if (!noDanglingEdges()) throw IllegalStateException("Graph has dangling edges")
 
         if (!maxTwoIncomingSuccessors()) throw IllegalStateException("Vertex has more than two incoming successors")
-        if (!maxTwoOutgoingSuccessors()) throw IllegalStateException("Vertex has more than two outgoing successors")
         if (!maxOneIncomingMerge()) throw IllegalStateException("Vertex has more than one incoming merge edge")
-        if (!maxOneOutgoingMerge()) throw IllegalStateException("Vertex has more than one outgoing merge edge")
+        if (!twoIncomingSuccessorsRequiresMerge()) throw IllegalStateException("Two incoming successors require a merge edge")
 
         if (hasCycles(depth)) throw IllegalStateException("Graph has cycles within depth $depth")
+
+        /*
+        TODO: more validity checks possible
+         */
 
         return true
     }

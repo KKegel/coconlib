@@ -14,7 +14,7 @@ class TinkerRevisionGraphValidationUnitTests {
 
     @BeforeEach
             /**
-             * a --> b --> e --> f
+             * a --> b --> e --> f --> g
              *       \---> c --/
              */
     fun setUp() {
@@ -23,7 +23,6 @@ class TinkerRevisionGraphValidationUnitTests {
                 VertexDescription("g1", "a", "A", "./a"),
                 VertexDescription("g1", "b", "B", "./b"),
                 VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "d", "D", "./d"),
                 VertexDescription("g1", "e", "E", "./e"),
                 VertexDescription("g1", "f", "F", "./f"),
                 VertexDescription("g1", "g", "G", "./g"),
@@ -37,7 +36,6 @@ class TinkerRevisionGraphValidationUnitTests {
                 EdgeDescription("f", "g", EdgeLabel.SUCCESSOR),
                 EdgeDescription("b", "f", EdgeLabel.MERGE),
             )))
-
     }
 
     @Test
@@ -94,5 +92,88 @@ class TinkerRevisionGraphValidationUnitTests {
     fun testCyclesValidGraph() {
         assertFalse(validGraph.hasCycles(10))
     }
+
+    @Test
+    fun testIsConnectedValidGraph() {
+        val miniValidGraph = TinkerRevisionGraph.build(
+            GraphDescription("g2", listOf(
+                VertexDescription("g2", "a", "A", "./a"),
+                VertexDescription("g2", "b", "B", "./b"),
+                VertexDescription("g2", "c", "C", "./c"),
+                VertexDescription("g2", "e", "E", "./e")
+                ), listOf(
+                EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
+                EdgeDescription("b", "c", EdgeLabel.SUCCESSOR),
+                EdgeDescription("b", "e", EdgeLabel.SUCCESSOR)
+            )))
+        assertTrue(miniValidGraph.hasOnlyOneRoot())
+    }
+
+    @Test
+    fun testIsConnectedInvalidGraph() {
+        validGraph.removeEdge(EdgeDescription("b", "c", EdgeLabel.SUCCESSOR))
+        assertFalse(validGraph.hasOnlyOneRoot())
+    }
+
+    @Test
+    fun testHasOnlyOneRoot() {
+        assertTrue(validGraph.hasOnlyOneRoot())
+    }
+
+    @Test
+    fun testHasOnlyOneRootInvalid() {
+        val invalidGraph = TinkerRevisionGraph.build(
+            GraphDescription("g1", listOf(
+                VertexDescription("g1", "a", "A", "./a"),
+                VertexDescription("g1", "b", "B", "./b"),
+                VertexDescription("g1", "c", "C", "./c"),
+                VertexDescription("g1", "e", "E", "./e"),
+                VertexDescription("g1", "f", "F", "./f")
+
+                ), listOf(
+                EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
+                EdgeDescription("b", "c", EdgeLabel.SUCCESSOR),
+                EdgeDescription("c", "f", EdgeLabel.SUCCESSOR),
+                EdgeDescription("e", "f", EdgeLabel.SUCCESSOR),
+                EdgeDescription("b", "f", EdgeLabel.MERGE),
+            )))
+
+        assertFalse(invalidGraph.hasOnlyOneRoot())
+    }
+
+    @Test
+    fun testMaxTwoIncomingSuccessors() {
+        assertTrue(validGraph.maxTwoIncomingSuccessors())
+    }
+
+    @Test
+    fun testMaxTwoIncomingSuccessorsInvalid() {
+        validGraph.addEdge(EdgeDescription("a", "c", EdgeLabel.SUCCESSOR))
+        validGraph.addEdge(EdgeDescription("f", "c", EdgeLabel.SUCCESSOR))
+        assertFalse(validGraph.maxTwoIncomingSuccessors())
+    }
+
+    @Test
+    fun testMaxOneIncomingMerge() {
+        assertTrue(validGraph.maxOneIncomingMerge())
+    }
+
+    @Test
+    fun testMaxOneIncomingMergeInvalid() {
+        validGraph.addEdge(EdgeDescription("a", "f", EdgeLabel.MERGE))
+        assertFalse(validGraph.maxOneIncomingMerge())
+    }
+
+    @Test
+    fun testTwoIncomingSuccessorsRequiresMerge() {
+        assertTrue(validGraph.twoIncomingSuccessorsRequiresMerge())
+    }
+
+    @Test
+    fun testTwoIncomingSuccessorsRequiresMergeInvalid() {
+        validGraph.removeEdge(EdgeDescription("b", "f", EdgeLabel.MERGE))
+        assertFalse(validGraph.twoIncomingSuccessorsRequiresMerge())
+    }
+
 
 }
