@@ -30,9 +30,9 @@ data class Relation(
 
     companion object {
 
-        fun serialize(consistencyLink: Relation): String {
-            return "L;${consistencyLink.fromGraph};${consistencyLink.toGraph};" +
-                    "${consistencyLink.fromRevision};${consistencyLink.toRevision};${consistencyLink.payload}"
+        fun serialize(relation: Relation): String {
+            return "L;${relation.fromGraph};${relation.toGraph};" +
+                    "${relation.fromRevision};${relation.toRevision};${relation.payload}"
         }
 
         fun parse(serialized: String): Relation {

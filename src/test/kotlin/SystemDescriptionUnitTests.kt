@@ -16,7 +16,9 @@
 
 import org.junit.jupiter.api.BeforeEach
 
-class MultiRevisionSystemSerializationTests {
+class SystemDescriptionUnitTests {
+
+    val validSystemSerialization: String = ""
 
     @BeforeEach
     fun setUp() {
