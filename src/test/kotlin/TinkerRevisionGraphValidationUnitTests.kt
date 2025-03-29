@@ -1,10 +1,11 @@
-import graphcore.EdgeDescription
-import graphcore.EdgeLabel
-import graphcore.GraphDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.EdgeLabel
+import graph.GraphDescription
+import graph.RevisionDescription
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import core.TinkerRevisionGraph
 import kotlin.test.assertTrue
 
 class TinkerRevisionGraphValidationUnitTests {
@@ -18,7 +19,7 @@ class TinkerRevisionGraphValidationUnitTests {
              *       \---> c --/
              */
     fun setUp() {
-        validGraph = TinkerRevisionGraph.build(
+        validGraph = TinkerRevisionGraph.Companion.build(
             GraphDescription("g1", listOf(
                 RevisionDescription("g1", "a", "A", "./a"),
                 RevisionDescription("g1", "b", "B", "./b"),
@@ -40,7 +41,7 @@ class TinkerRevisionGraphValidationUnitTests {
 
     @Test
     fun testCyclicGraph() {
-        val revisionGraphCyclic5 = TinkerRevisionGraph.build(
+        val revisionGraphCyclic5 = TinkerRevisionGraph.Companion.build(
             GraphDescription("g1", listOf(
                 RevisionDescription("g1", "a", "A", "./a"),
                 RevisionDescription("g1", "b", "B", "./b"),
@@ -65,7 +66,7 @@ class TinkerRevisionGraphValidationUnitTests {
 
     @Test
     fun testCyclicGraph2() {
-        val revisionGraphCyclic5 = TinkerRevisionGraph.build(
+        val revisionGraphCyclic5 = TinkerRevisionGraph.Companion.build(
             GraphDescription("g1", listOf(
                 RevisionDescription("g1", "a", "A", "./a"),
                 RevisionDescription("g1", "b", "B", "./b"),
@@ -95,7 +96,7 @@ class TinkerRevisionGraphValidationUnitTests {
 
     @Test
     fun testIsConnectedValidGraph() {
-        val miniValidGraph = TinkerRevisionGraph.build(
+        val miniValidGraph = TinkerRevisionGraph.Companion.build(
             GraphDescription("g2", listOf(
                 RevisionDescription("g2", "a", "A", "./a"),
                 RevisionDescription("g2", "b", "B", "./b"),
@@ -122,7 +123,7 @@ class TinkerRevisionGraphValidationUnitTests {
 
     @Test
     fun testHasOnlyOneRootInvalid() {
-        val invalidGraph = TinkerRevisionGraph.build(
+        val invalidGraph = TinkerRevisionGraph.Companion.build(
             GraphDescription("g1", listOf(
                 RevisionDescription("g1", "a", "A", "./a"),
                 RevisionDescription("g1", "b", "B", "./b"),

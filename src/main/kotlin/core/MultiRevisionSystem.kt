@@ -1,10 +1,3 @@
-import context.Context
-import context.ContextType
-import graphcore.RevisionDescription
-import graphextend.Relation
-import graphextend.Projection
-import graphextend.SystemDescription
-
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -20,6 +13,15 @@ import graphextend.SystemDescription
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package core
+
+import context.Context
+import context.ContextType
+import graph.RevisionDescription
+import system.Relation
+import system.Projection
+import system.SystemDescription
 
 class MultiRevisionSystem(
     private val parts: MutableSet<RevisionGraph>,
@@ -40,7 +42,7 @@ class MultiRevisionSystem(
             throw IllegalArgumentException("Context type $contextType not supported by this method!")
         }
         val graph = getGraphById(graphId)
-        return GraphQueryInterface(graph).findContextByShortId(revisionShortId, contextType, depth)
+        return GraphQueryInterface(graph).findContext(revisionShortId, contextType, depth)
     }
 
     fun getGlobalContext(revisionShortId: String, contextType: ContextType): Context {
@@ -75,7 +77,7 @@ class MultiRevisionSystem(
                 return graph.transform(graph.getRevision(revisionShortId))
             }
         }
-        throw IllegalArgumentException("Revision with short ID $revisionShortId not found in active system")
+        throw IllegalArgumentException("Revision with short ID $revisionShortId not found in active core")
     }
 
     fun getRevisionGraphs(): Set<RevisionGraph> {
@@ -102,13 +104,6 @@ class MultiRevisionSystem(
 
         fun create(graphs: Set<RevisionGraph>, links: Set<Relation>, projections: Set<Projection>): MultiRevisionSystem {
             return MultiRevisionSystem(graphs.toMutableSet(), links.toMutableSet(), projections.toMutableSet())
-        }
-
-        fun create(systemDescription: SystemDescription): MultiRevisionSystem {
-            return MultiRevisionSystem(
-                systemDescription.parts.toMutableSet(),
-                systemDescription.links.toMutableSet(),
-                systemDescription.projections.toMutableSet())
         }
 
     }

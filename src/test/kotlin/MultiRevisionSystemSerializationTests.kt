@@ -14,5 +14,13 @@
  *  limitations under the License.
  */
 
-class TinkerSingleInterfaceTests {
+import org.junit.jupiter.api.BeforeEach
+
+class MultiRevisionSystemSerializationTests {
+
+    @BeforeEach
+    fun setUp() {
+        // Initialize the test environment
+    }
+
 }

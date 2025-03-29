@@ -14,13 +14,14 @@
  *  limitations under the License.
  */
 
-import graphcore.EdgeDescription
-import graphcore.EdgeLabel
-import graphcore.GraphDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.EdgeLabel
+import graph.GraphDescription
+import graph.RevisionDescription
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import core.TinkerRevisionGraph
 
 class TinkerRevisionGraphQueryUnitTests {
 
@@ -35,7 +36,7 @@ class TinkerRevisionGraphQueryUnitTests {
      */
     @BeforeEach
     fun setUp() {
-        revisionGraph = TinkerRevisionGraph.build(
+        revisionGraph = TinkerRevisionGraph.Companion.build(
             GraphDescription("g1", listOf(
                 RevisionDescription("g1", "a", "A", "./a"),
                 RevisionDescription("g1", "b", "B", "./b"),

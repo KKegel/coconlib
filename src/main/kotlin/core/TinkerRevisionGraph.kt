@@ -1,3 +1,5 @@
+package core
+
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -14,10 +16,10 @@
  *  limitations under the License.
  */
 
-import graphcore.EdgeDescription
-import graphcore.EdgeLabel
-import graphcore.GraphDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.EdgeLabel
+import graph.GraphDescription
+import graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal.Symbols.id
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__
@@ -38,6 +40,13 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return traversal().with(graph)
             .V()
             .has(id, vertex.shortId)
+            .hasNext()
+    }
+
+    override fun hasRevision(longId: String): Boolean {
+        return traversal().with(graph)
+            .V()
+            .has("longId", longId)
             .hasNext()
     }
 

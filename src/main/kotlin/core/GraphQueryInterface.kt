@@ -1,3 +1,5 @@
+package core
+
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -16,13 +18,13 @@
 
 import context.Context
 import context.ContextType
-import graphcore.EdgeDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
-class GraphQueryInterface(val revisionGraph: RevisionGraph) {
+class GraphQueryInterface(private val revisionGraph: RevisionGraph) {
 
-    fun findContextByShortId(revisionShortId: String, contextType: ContextType, depth: Int): Context {
+    fun findContext(revisionShortId: String, contextType: ContextType, depth: Int): Context {
         var vertex: Vertex
         try {
             vertex = revisionGraph.getRevision(revisionShortId)
@@ -33,19 +35,8 @@ class GraphQueryInterface(val revisionGraph: RevisionGraph) {
         return findContext(vertex, contextType, depth)
     }
 
-    fun findContextByLongId(revisionLongId: String, contextType: ContextType, depth: Int): Context {
-        var vertex: Vertex
-        try {
-            vertex = revisionGraph.getRevisionByLongId(revisionLongId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw IllegalArgumentException("Revision with short ID $revisionLongId not found")
-        }
-        return findContext(vertex, contextType, depth)
-    }
-
     private fun findContext(vertex: Vertex, contextType: ContextType, depth: Int): Context {
-        if (depth <= 0 && depth != Context.UNBOUNDED) {
+        if (depth < 0 && depth != Context.UNBOUNDED) {
             throw IllegalArgumentException("Depth must be greater or equal 0 or Context.UNBOUNDED (-1)")
         }
         return if (contextType == ContextType.TIME) {

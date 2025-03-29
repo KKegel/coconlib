@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-import graphcore.EdgeDescription
-import graphcore.EdgeLabel
-import graphcore.GraphDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.EdgeLabel
+import graph.GraphDescription
+import graph.RevisionDescription
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals

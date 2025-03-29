@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package graphcore
+package graph
 
 data class RevisionDescription(
     val graph: String,

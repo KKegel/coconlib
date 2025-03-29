@@ -16,7 +16,7 @@
 
 package context
 
-import graphcore.RevisionDescription
+import graph.RevisionDescription
 
 data class Context(
     val contextType: ContextType,

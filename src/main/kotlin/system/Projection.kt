@@ -14,15 +14,9 @@
  *  limitations under the License.
  */
 
-package graphextend
+package system
 
-data class Relation(
-    val fromGraph: String,
-    val toGraph: String,
-    val fromRevision: String,
-    val toRevision: String,
-    val payload: String
-){
+data class Projection(val projectionId: String, val sources: List<String>, val target: String) {
 
     fun serialize(): String {
         return serialize(this)
@@ -30,18 +24,19 @@ data class Relation(
 
     companion object {
 
-        fun serialize(consistencyLink: Relation): String {
-            return "L;${consistencyLink.fromGraph};${consistencyLink.toGraph};" +
-                    "${consistencyLink.fromRevision};${consistencyLink.toRevision};${consistencyLink.payload}"
+        fun serialize(projection: Projection): String {
+            return "P;${projection.projectionId};${projection.sources.joinToString(",")};${projection.target}"
         }
 
-        fun parse(serialized: String): Relation {
-            assert(serialized.startsWith("L;")) { "Serialized string must have RELATIONAL format" }
-            assert(serialized.count { it == ';' } == 5) { "Serialized string must have 5 entries" }
+        fun parse(serialized: String): Projection {
+            assert(serialized.startsWith("P;")) { "Serialized string must have PROJECTION format" }
+            assert(serialized.count { it == ';' } == 4) { "Serialized string must have 4 entries" }
 
             val parts = serialized.split(";")
-            return Relation(parts[1], parts[2], parts[3], parts[4], parts[5])
+            val sources = parts[2].split(",").map { it.trim() }
+            val target = parts[3].trim()
+            return Projection(parts[1], sources, target)
         }
-
     }
+
 }

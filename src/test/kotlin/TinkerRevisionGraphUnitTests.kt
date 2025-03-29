@@ -14,12 +14,13 @@
  *  limitations under the License.
  */
 
-import graphcore.EdgeDescription
-import graphcore.EdgeLabel
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.EdgeLabel
+import graph.RevisionDescription
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import core.TinkerRevisionGraph
 
 class TinkerRevisionGraphUnitTests {
 

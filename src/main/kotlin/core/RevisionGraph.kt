@@ -1,3 +1,5 @@
+package core
+
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -14,9 +16,9 @@
  *  limitations under the License.
  */
 
-import graphcore.EdgeDescription
-import graphcore.GraphDescription
-import graphcore.RevisionDescription
+import graph.EdgeDescription
+import graph.GraphDescription
+import graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Edge
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
