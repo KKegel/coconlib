@@ -84,7 +84,7 @@ class MultiRevisionSystem(
         return parts
     }
 
-    fun getCrossLinks(): Set<Relation> {
+    fun getRelations(): Set<Relation> {
         return links
     }
 
@@ -94,6 +94,10 @@ class MultiRevisionSystem(
 
     fun getDescription(): SystemDescription {
         return SystemDescription(parts, links, projections)
+    }
+
+    fun serialize(): String {
+        return getDescription().serialize()
     }
 
     companion object {

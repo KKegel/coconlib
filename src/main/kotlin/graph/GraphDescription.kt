@@ -34,9 +34,11 @@ data class GraphDescription(
     companion object {
 
         fun serialize(graphDescription: GraphDescription): String {
-            return "G;${graphDescription.id};\n" +
-                    graphDescription.vertices.joinToString("\n") { RevisionDescription.serialize(it) } + "\n" +
-                    graphDescription.edges.joinToString("\n") { EdgeDescription.serialize(it) } + "\n"
+            return "G;${graphDescription.id}\n" +
+                    graphDescription.vertices.map { RevisionDescription.serialize(it) }
+                        .toList().sorted().joinToString("\n") + "\n" +
+                    graphDescription.edges.map { EdgeDescription.serialize(it) }
+                        .toList().sorted().joinToString("\n")
         }
 
         fun parse(lines: List<String>): GraphDescription {
@@ -47,7 +49,7 @@ data class GraphDescription(
         fun parse(serialized: String): GraphDescription {
             assert(serialized.startsWith("G;")) { "Serialized string must have GRAPH format" }
 
-            val parts = serialized.split("\n")
+            val parts = serialized.split("\n").map { it.trim() }
             assert(parts[0].startsWith("G;"))
             val id = parts[0].split(";")[1]
 
@@ -67,6 +69,10 @@ data class GraphDescription(
                     parts.indexOfLast { it.startsWith("E;")} + 1 ).map {
                     EdgeDescription.parse(it)
                 }
+            }
+
+            vertices.forEach {
+                assert(it.graph == id) { "Graph ID in vertex does not match graph ID" }
             }
 
             return GraphDescription(id, vertices, edges)

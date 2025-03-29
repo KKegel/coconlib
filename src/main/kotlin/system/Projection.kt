@@ -30,12 +30,12 @@ data class Projection(val projectionId: String, val sources: List<String>, val t
 
         fun parse(serialized: String): Projection {
             assert(serialized.startsWith("P;")) { "Serialized string must have PROJECTION format" }
-            assert(serialized.count { it == ';' } == 4) { "Serialized string must have 4 entries" }
+            assert(serialized.count { it == ';' } == 3) { "Serialized string must have 4 entries" }
 
             val parts = serialized.split(";")
             val sources = parts[2].split(",").map { it.trim() }
             val target = parts[3].trim()
-            return Projection(parts[1], sources, target)
+            return Projection(parts[1].trim(), sources, target)
         }
     }
 

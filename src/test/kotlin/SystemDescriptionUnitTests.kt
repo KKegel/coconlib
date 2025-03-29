@@ -14,15 +14,61 @@
  *  limitations under the License.
  */
 
-import org.junit.jupiter.api.BeforeEach
+import core.TinkerRevisionGraph
+import system.Relation
+import system.SystemDescription
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class SystemDescriptionUnitTests {
 
-    val validSystemSerialization: String = ""
+    val systemDescriptionString = """
+            GRAPHS
+            G;g1
+            V;g1;1a;2aaa;C:/a;
+            V;g1;1b;2bbb;C:/b;
+            V;g1;1c;2ccc;C:/c;
+            E;1a;1b;SUCCESSOR
+            E;1a;1c;SUCCESSOR
+            G;g2
+            V;g2;2a;2aaa;C:/a;
+            V;g2;2b;2bbb;C:/b;
+            V;g2;2c;2ccc;C:/c;
+            E;2a;2b;SUCCESSOR
+            E;2b;2c;SUCCESSOR
+            RELATIONS
+            L;g1;g2;1a;2a;some constraint
+            L;g1;g2;1b;2b;some other constraint
+            PROJECTIONS
+            P;MyView;g1a,g2b;x/y/z
+        """.trimIndent()
 
-    @BeforeEach
-    fun setUp() {
-        // Initialize the test environment
+    @Test
+    fun testBasicParse() {
+        val systemDescription = SystemDescription.parse(systemDescriptionString, TinkerRevisionGraph::build)
+        assertEquals(2, systemDescription.parts.size)
+        assertEquals(2, systemDescription.relations.size)
+        assertEquals(1, systemDescription.projections.size)
+
+        assertEquals("MyView", systemDescription.projections.first().projectionId)
+        assertEquals(Relation("g1", "g2", "1a", "2a", "some constraint"),
+            systemDescription.relations.find { it.fromRevision == "1a" && it.toRevision == "2a" }!!)
+
+        val graph1 = systemDescription.parts.find { it.graphId == "g1" }!!
+        val graph2 = systemDescription.parts.find { it.graphId == "g2" }!!
+
+        assertEquals(3, graph1.getRevisions().size)
+        assertEquals(3, graph2.getRevisions().size)
+        assertEquals("1a", graph1.transform(graph1.getRootRevision()).shortId)
+        assertEquals(2, graph1.getEdges().size)
+        assertEquals(2, graph2.getEdges().size)
+    }
+
+    @Test
+    fun testBasicSerialize() {
+        val systemDescription = SystemDescription.parse(systemDescriptionString, TinkerRevisionGraph::build)
+        val serialized = systemDescription.serialize()
+        assertEquals(systemDescriptionString, serialized)
     }
 
 }

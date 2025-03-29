@@ -46,7 +46,7 @@ data class EdgeDescription(
             assert(serialized.startsWith("E;")) { "Serialized string must have EDGE format" }
             assert(serialized.count { it == ';' } == 3) { "Serialized string must have 3 entries" }
 
-            val parts = serialized.split(";")
+            val parts = serialized.split(";").map { it.trim() }
             return EdgeDescription(parts[1], parts[2], EdgeLabel.valueOf(parts[3]))
         }
 

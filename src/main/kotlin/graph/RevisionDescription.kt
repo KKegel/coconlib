@@ -51,7 +51,7 @@ data class RevisionDescription(
             assert(serialized.startsWith("V;")) { "Serialized string must have VERTEX format" }
             assert(serialized.count { it == ';' } == 5) { "Serialized string must have 5 entries" }
 
-            val parts = serialized.split(";")
+            val parts = serialized.split(";").map { it.trim() }
             return RevisionDescription(parts[1], parts[2], parts[3], parts[4], parts[5])
         }
 
