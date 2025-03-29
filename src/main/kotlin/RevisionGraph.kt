@@ -16,35 +16,36 @@
 
 import graphcore.EdgeDescription
 import graphcore.GraphDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Edge
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
 abstract class RevisionGraph(val graphId: String) {
 
-    abstract fun hasRevision(vertex: VertexDescription): Boolean
+    abstract fun hasRevision(shortId: String): Boolean
+    abstract fun hasRevision(vertex: RevisionDescription): Boolean
     abstract fun hasEdge(edge: EdgeDescription): Boolean
 
     abstract fun getRevision(shortId: String): Vertex
     abstract fun getRevisionByLongId(longId: String): Vertex
     abstract fun getEdge(sourceShortId: String, targetShortId: String): Edge
 
-    abstract fun addRevision(vertex: VertexDescription)
+    abstract fun addRevision(vertex: RevisionDescription)
     abstract fun addEdge(edge: EdgeDescription)
 
-    abstract fun removeRevision(vertex: VertexDescription)
+    abstract fun removeRevision(vertex: RevisionDescription)
     abstract fun removeEdge(edge: EdgeDescription)
 
     abstract fun prettyPrint(): String
 
-    abstract fun transform(vertexDescription: VertexDescription): Vertex
-    abstract fun transform(vertex: Vertex): VertexDescription
+    abstract fun transform(revisionDescription: RevisionDescription): Vertex
+    abstract fun transform(vertex: Vertex): RevisionDescription
     abstract fun transform(shortId: String): Vertex
     abstract fun transform(edgeDescription: EdgeDescription): Edge
     abstract fun transform(sourceShortId: String, targetShortId: String): Edge
     abstract fun transform(edge: Edge): EdgeDescription
 
-    abstract fun getRevisions(): List<VertexDescription>
+    abstract fun getRevisions(): List<RevisionDescription>
     abstract fun getEdges(): List<EdgeDescription>
     abstract fun getSuccessorEdges(): List<Edge>
     abstract fun getMergeEdges(): List<Edge>

@@ -16,7 +16,7 @@
 
 package graphextend
 
-data class Projection(val projectionId: String, val sources: List<String>, val targets: List<String>) {
+data class Projection(val projectionId: String, val sources: List<String>, val target: String) {
 
     fun serialize(): String {
         return serialize(this)
@@ -34,8 +34,8 @@ data class Projection(val projectionId: String, val sources: List<String>, val t
 
             val parts = serialized.split(";")
             val sources = parts[2].split(",").map { it.trim() }
-            val targets = parts[3].split(",").map { it.trim() }
-            return Projection(parts[1], sources, targets)
+            val target = parts[3].trim()
+            return Projection(parts[1], sources, target)
         }
     }
 

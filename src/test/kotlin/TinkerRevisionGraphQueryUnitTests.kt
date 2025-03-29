@@ -17,7 +17,7 @@
 import graphcore.EdgeDescription
 import graphcore.EdgeLabel
 import graphcore.GraphDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -37,17 +37,17 @@ class TinkerRevisionGraphQueryUnitTests {
     fun setUp() {
         revisionGraph = TinkerRevisionGraph.build(
             GraphDescription("g1", listOf(
-                VertexDescription("g1", "a", "A", "./a"),
-                VertexDescription("g1", "b", "B", "./b"),
-                VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "d", "D", "./d"),
-                VertexDescription("g1", "e", "E", "./e"),
-                VertexDescription("g1", "f", "F", "./f"),
-                VertexDescription("g1", "g", "G", "./g"),
-                VertexDescription("g1", "h", "H", "./h"),
-                VertexDescription("g1", "j", "J", "./j"),
-                VertexDescription("g1", "k", "K", "./k"),
-                VertexDescription("g1", "p", "P", "./p")
+                RevisionDescription("g1", "a", "A", "./a"),
+                RevisionDescription("g1", "b", "B", "./b"),
+                RevisionDescription("g1", "c", "C", "./c"),
+                RevisionDescription("g1", "d", "D", "./d"),
+                RevisionDescription("g1", "e", "E", "./e"),
+                RevisionDescription("g1", "f", "F", "./f"),
+                RevisionDescription("g1", "g", "G", "./g"),
+                RevisionDescription("g1", "h", "H", "./h"),
+                RevisionDescription("g1", "j", "J", "./j"),
+                RevisionDescription("g1", "k", "K", "./k"),
+                RevisionDescription("g1", "p", "P", "./p")
             ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
                 EdgeDescription("a", "c", EdgeLabel.SUCCESSOR),

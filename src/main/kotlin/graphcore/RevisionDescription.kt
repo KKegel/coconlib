@@ -16,7 +16,7 @@
 
 package graphcore
 
-data class VertexDescription(
+data class RevisionDescription(
     val graph: String,
     val shortId: String,
     val longId: String,
@@ -42,17 +42,17 @@ data class VertexDescription(
 
     companion object {
 
-        fun serialize(vertexDescription: VertexDescription): String {
-            return "V;${vertexDescription.graph};${vertexDescription.shortId};" +
-                    "${vertexDescription.longId};${vertexDescription.location};${vertexDescription.payload}"
+        fun serialize(revisionDescription: RevisionDescription): String {
+            return "V;${revisionDescription.graph};${revisionDescription.shortId};" +
+                    "${revisionDescription.longId};${revisionDescription.location};${revisionDescription.payload}"
         }
 
-        fun parse(serialized: String): VertexDescription {
+        fun parse(serialized: String): RevisionDescription {
             assert(serialized.startsWith("V;")) { "Serialized string must have VERTEX format" }
             assert(serialized.count { it == ';' } == 5) { "Serialized string must have 5 entries" }
 
             val parts = serialized.split(";")
-            return VertexDescription(parts[1], parts[2], parts[3], parts[4], parts[5])
+            return RevisionDescription(parts[1], parts[2], parts[3], parts[4], parts[5])
         }
 
     }

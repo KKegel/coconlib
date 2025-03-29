@@ -16,7 +16,7 @@
 
 import graphcore.EdgeDescription
 import graphcore.EdgeLabel
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,9 +28,9 @@ class TinkerRevisionGraphUnitTests {
     @BeforeEach
     fun setUp() {
         revisionGraph = TinkerRevisionGraph("g1")
-        val v1 = VertexDescription("g1", "v1", "Version 1", "./a", "payload")
-        val v2 = VertexDescription("g1", "v2", "Version e", "./b", "payload")
-        val v3 = VertexDescription("g1", "v3", "Version 3", "./c", "payload")
+        val v1 = RevisionDescription("g1", "v1", "Version 1", "./a", "payload")
+        val v2 = RevisionDescription("g1", "v2", "Version e", "./b", "payload")
+        val v3 = RevisionDescription("g1", "v3", "Version 3", "./c", "payload")
         revisionGraph.addRevision(v1)
         revisionGraph.addRevision(v2)
         revisionGraph.addRevision(v3)
@@ -65,7 +65,7 @@ class TinkerRevisionGraphUnitTests {
 
     @Test
     fun testAddAndRemoveRevision() {
-        val v4 = VertexDescription("g1", "v4", "Version 4", "./d", "payload")
+        val v4 = RevisionDescription("g1", "v4", "Version 4", "./d", "payload")
         revisionGraph.addRevision(v4)
         assertEquals(4, revisionGraph.graph.traversal().V().count().next())
         assertEquals(4, revisionGraph.getRevisions().size)

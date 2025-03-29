@@ -17,5 +17,5 @@
 package context
 
 enum class ContextType {
-    SPACE, TIME, LINK, VOLATILE
+    SPACE, TIME, RELATIONAL, PROJECTIVE
 }

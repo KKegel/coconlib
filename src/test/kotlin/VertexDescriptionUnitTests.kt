@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
@@ -23,7 +23,7 @@ class VertexDescriptionUnitTests {
 
     @Test
     fun testInit() {
-        val vertex = VertexDescription("graph1", "short1", "long1", "location1", "payload1")
+        val vertex = RevisionDescription("graph1", "short1", "long1", "location1", "payload1")
         assertEquals("graph1", vertex.graph)
         assertEquals("short1", vertex.shortId)
         assertEquals("long1", vertex.longId)
@@ -33,52 +33,52 @@ class VertexDescriptionUnitTests {
 
     @Test
     fun testInitErrorGraphEmpty() {
-        assertThrows<AssertionError> { VertexDescription("", "short1", "long1", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("", "short1", "long1", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorShortIdEmpty() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "", "long1", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "", "long1", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorLongIdEmpty() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short1", "", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short1", "", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorLocationEmpty() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short1", "long1", "", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short1", "long1", "", "payload1") }
     }
 
     @Test
     fun testInitErrorGraphContainsSemicolon() {
-        assertThrows<AssertionError> { VertexDescription("graph;1", "short1", "long1", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph;1", "short1", "long1", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorShortIdContainsSemicolon() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short;1", "long1", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short;1", "long1", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorLongIdContainsSemicolon() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short1", "long;1", "location1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short1", "long;1", "location1", "payload1") }
     }
 
     @Test
     fun testInitErrorLocationContainsSemicolon() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short1", "long1", "location;1", "payload1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short1", "long1", "location;1", "payload1") }
     }
 
     @Test
     fun testInitErrorPayloadContainsSemicolon() {
-        assertThrows<AssertionError> { VertexDescription("graph1", "short1", "long1", "location1", "payload;1") }
+        assertThrows<AssertionError> { RevisionDescription("graph1", "short1", "long1", "location1", "payload;1") }
     }
 
     @Test
     fun testSerialize() {
-        val vertex = VertexDescription("graph1", "short1", "long1", "location1", "payload1")
+        val vertex = RevisionDescription("graph1", "short1", "long1", "location1", "payload1")
         val serialized = vertex.serialize()
         assertEquals("V;graph1;short1;long1;location1;payload1", serialized)
     }
@@ -86,7 +86,7 @@ class VertexDescriptionUnitTests {
     @Test
     fun testParse() {
         val serialized = "V;graph1;short1;long1;location1;payload1"
-        val vertex = VertexDescription.parse(serialized)
+        val vertex = RevisionDescription.parse(serialized)
         assertEquals("graph1", vertex.graph)
         assertEquals("short1", vertex.shortId)
         assertEquals("long1", vertex.longId)
@@ -96,26 +96,26 @@ class VertexDescriptionUnitTests {
 
     @Test
     fun testDefaultPayload() {
-        val vertex = VertexDescription("graph1", "short1", "long1", "location1")
+        val vertex = RevisionDescription("graph1", "short1", "long1", "location1")
         assertEquals("", vertex.payload)
     }
 
     @Test
     fun testParseErrorTooShort() {
         val serialized = "V;graph1;short1;long1;location1"
-        assertThrows<AssertionError> { VertexDescription.parse(serialized) }
+        assertThrows<AssertionError> { RevisionDescription.parse(serialized) }
     }
 
     @Test
     fun testParseErrorTooLong() {
         val serialized = "V;graph1;short1;long1;location1;payload1;extra"
-        assertThrows<AssertionError> { VertexDescription.parse(serialized) }
+        assertThrows<AssertionError> { RevisionDescription.parse(serialized) }
     }
 
     @Test
     fun testParseErrorWrongPrefix() {
         val serialized = "X;graph1;short1;long1;location1;payload1"
-        assertThrows<AssertionError> { VertexDescription.parse(serialized) }
+        assertThrows<AssertionError> { RevisionDescription.parse(serialized) }
     }
 
 }

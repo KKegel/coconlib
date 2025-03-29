@@ -1,5 +1,7 @@
 package graphextend
 
+import graphcore.GraphDescription
+
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -17,8 +19,8 @@ package graphextend
  */
 
 data class SystemDescription(val parts: Set<RevisionGraph>,
-                        val links: Set<CrossLink>,
-                        val projections: Set<Projection>) {
+                             val links: Set<Relation>,
+                             val projections: Set<Projection>) {
 
     fun serialize(): String {
         return serialize(this)
@@ -30,9 +32,46 @@ data class SystemDescription(val parts: Set<RevisionGraph>,
             return "GRAPHS\n" +
                     systemDescription.parts.joinToString("\n") { it.toDescription().serialize() } + "\n" +
                     "LINKS\n" +
-                    systemDescription.links.joinToString("\n") { CrossLink.serialize(it) } + "\n" +
+                    systemDescription.links.joinToString("\n") { Relation.serialize(it) } + "\n" +
                     "PROJECTIONS\n" +
                     systemDescription.projections.joinToString("\n") { Projection.serialize(it) } + "\n"
+        }
+
+        fun parse(serialized: String, graphBuilder: (GraphDescription) -> RevisionGraph): SystemDescription {
+            assert(serialized.startsWith("GRAPHS")) { "Serialized string must have SYSTEM format" }
+
+            val parts = serialized.split("\n")
+            assert(parts[0].startsWith("GRAPHS"))
+
+            val graphLines = parts.subList(
+                1,
+                parts.indexOfFirst { it.startsWith("LINKS") }
+            )
+
+            val graphGroups: MutableList<MutableList<String>> = mutableListOf()
+            for (line in graphLines) {
+                if (line.isEmpty()) {
+                    continue
+                }
+                if (line.startsWith("G;")) {
+                    graphGroups.add(mutableListOf())
+                }
+                graphGroups.last().add(line)
+            }
+
+            val graphs = graphGroups.map { GraphDescription.parse(it.toList()) }.map { graphBuilder(it) }
+
+            val links = parts.subList(
+                parts.indexOfFirst { it.startsWith("LINKS") } + 1,
+                parts.indexOfFirst { it.startsWith("PROJECTIONS") }
+            ).map { Relation.parse(it) }.toSet()
+
+            val projections = parts.subList(
+                parts.indexOfFirst { it.startsWith("PROJECTIONS") } + 1,
+                parts.size - 1
+            ).map { Projection.parse(it) }.toSet()
+
+            return SystemDescription(graphs.toSet(), links, projections)
         }
 
     }

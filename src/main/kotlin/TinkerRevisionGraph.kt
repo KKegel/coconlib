@@ -17,7 +17,7 @@
 import graphcore.EdgeDescription
 import graphcore.EdgeLabel
 import graphcore.GraphDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal.Symbols.id
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__
@@ -34,7 +34,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return graph.toString()
     }
 
-    override fun hasRevision(vertex: VertexDescription): Boolean {
+    override fun hasRevision(vertex: RevisionDescription): Boolean {
         return traversal().with(graph)
             .V()
             .has(id, vertex.shortId)
@@ -53,7 +53,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             ).hasNext()
     }
 
-    override fun addRevision(vertex: VertexDescription) {
+    override fun addRevision(vertex: RevisionDescription) {
         val g = traversal().with(graph)
         g.addV(REVISION)
             .property(id, vertex.shortId)
@@ -84,7 +84,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             .next()
     }
 
-    override fun removeRevision(vertex: VertexDescription) {
+    override fun removeRevision(vertex: RevisionDescription) {
         traversal().with(graph)
             .V()
             .has(id, vertex.shortId)
@@ -125,12 +125,12 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         }
     }
 
-    override fun getRevisions(): List<VertexDescription> {
+    override fun getRevisions(): List<RevisionDescription> {
         return traversal().with(graph)
             .V()
             .toList()
             .map { vertex ->
-            VertexDescription(
+            RevisionDescription(
                 graphId,
                 vertex.property<String>(id).value().toString(),
                 vertex.property<String>("longId").value().toString(),
@@ -154,8 +154,8 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         }
     }
 
-    override fun transform(vertexDescription: VertexDescription): Vertex {
-        return transform(vertexDescription.shortId)
+    override fun transform(revisionDescription: RevisionDescription): Vertex {
+        return transform(revisionDescription.shortId)
     }
 
     override fun transform(edgeDescription: EdgeDescription): Edge {
@@ -180,8 +180,8 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             ).next()
     }
 
-    override fun transform(vertex: Vertex): VertexDescription {
-        return VertexDescription(
+    override fun transform(vertex: Vertex): RevisionDescription {
+        return RevisionDescription(
             graphId,
             vertex.property<String>(id).value().toString(),
             vertex.property<String>("longId").value().toString(),
@@ -457,7 +457,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             return build(graphDescription.id, graphDescription.vertices, graphDescription.edges)
         }
 
-        fun build(graphId: String, vertices: List<VertexDescription>, edges: List<EdgeDescription>): TinkerRevisionGraph {
+        fun build(graphId: String, vertices: List<RevisionDescription>, edges: List<EdgeDescription>): TinkerRevisionGraph {
 
             assert(graphId.isNotEmpty()) { "Graph ID must not be empty" }
             val revisionGraph = TinkerRevisionGraph(graphId)

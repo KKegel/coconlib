@@ -17,7 +17,7 @@
 import graphcore.EdgeDescription
 import graphcore.EdgeLabel
 import graphcore.GraphDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
@@ -26,8 +26,8 @@ class GraphDescriptionUnitTests {
 
     @Test
     fun testSerializeParse() {
-        val vertex1 = VertexDescription("graph1", "v1", "vertex1", "location1")
-        val vertex2 = VertexDescription("graph1", "v2", "vertex2", "location2")
+        val vertex1 = RevisionDescription("graph1", "v1", "vertex1", "location1")
+        val vertex2 = RevisionDescription("graph1", "v2", "vertex2", "location2")
         val edge = EdgeDescription("v1", "v2", EdgeLabel.SUCCESSOR)
 
         val graph = GraphDescription("graph1", listOf(vertex1, vertex2), listOf(edge))
@@ -62,9 +62,9 @@ class GraphDescriptionUnitTests {
 
     @Test
     fun testNonEmptyGraph() {
-        val vertex1 = VertexDescription("graph1", "v1", "vertex1", "location1")
-        val vertex2 = VertexDescription("graph1", "v2", "vertex2", "location2")
-        val vertex3 = VertexDescription("graph1", "v3", "vertex3", "location3")
+        val vertex1 = RevisionDescription("graph1", "v1", "vertex1", "location1")
+        val vertex2 = RevisionDescription("graph1", "v2", "vertex2", "location2")
+        val vertex3 = RevisionDescription("graph1", "v3", "vertex3", "location3")
         val edge1 = EdgeDescription("v1", "v2", EdgeLabel.SUCCESSOR)
         val edge2 = EdgeDescription("v2", "v3", EdgeLabel.SUCCESSOR)
 

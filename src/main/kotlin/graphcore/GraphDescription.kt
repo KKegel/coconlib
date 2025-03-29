@@ -18,7 +18,7 @@ package graphcore
 
 data class GraphDescription(
     val id: String,
-    val vertices: List<VertexDescription>,
+    val vertices: List<RevisionDescription>,
     val edges: List<EdgeDescription>
 ) {
 
@@ -35,8 +35,13 @@ data class GraphDescription(
 
         fun serialize(graphDescription: GraphDescription): String {
             return "G;${graphDescription.id};\n" +
-                    graphDescription.vertices.joinToString("\n") { VertexDescription.serialize(it) } + "\n" +
+                    graphDescription.vertices.joinToString("\n") { RevisionDescription.serialize(it) } + "\n" +
                     graphDescription.edges.joinToString("\n") { EdgeDescription.serialize(it) } + "\n"
+        }
+
+        fun parse(lines: List<String>): GraphDescription {
+            val concat = lines.joinToString("\n")
+            return parse(concat)
         }
 
         fun parse(serialized: String): GraphDescription {
@@ -46,14 +51,14 @@ data class GraphDescription(
             assert(parts[0].startsWith("G;"))
             val id = parts[0].split(";")[1]
 
-            var vertices = emptyList<VertexDescription>()
+            var vertices = emptyList<RevisionDescription>()
             var edges = emptyList<EdgeDescription>()
 
             if (parts.find { it.startsWith("V;") } != null) {
                 vertices = parts.subList(
                     parts.indexOfFirst { it.startsWith("V;") },
                     parts.indexOfLast { it.startsWith("V;")} + 1 ).map {
-                    VertexDescription.parse(it)
+                    RevisionDescription.parse(it)
                 }
             }
             if (parts.find { it.startsWith("E;") } != null) {

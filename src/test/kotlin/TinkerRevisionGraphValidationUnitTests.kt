@@ -1,7 +1,7 @@
 import graphcore.EdgeDescription
 import graphcore.EdgeLabel
 import graphcore.GraphDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,12 +20,12 @@ class TinkerRevisionGraphValidationUnitTests {
     fun setUp() {
         validGraph = TinkerRevisionGraph.build(
             GraphDescription("g1", listOf(
-                VertexDescription("g1", "a", "A", "./a"),
-                VertexDescription("g1", "b", "B", "./b"),
-                VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "e", "E", "./e"),
-                VertexDescription("g1", "f", "F", "./f"),
-                VertexDescription("g1", "g", "G", "./g"),
+                RevisionDescription("g1", "a", "A", "./a"),
+                RevisionDescription("g1", "b", "B", "./b"),
+                RevisionDescription("g1", "c", "C", "./c"),
+                RevisionDescription("g1", "e", "E", "./e"),
+                RevisionDescription("g1", "f", "F", "./f"),
+                RevisionDescription("g1", "g", "G", "./g"),
 
             ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
@@ -42,13 +42,13 @@ class TinkerRevisionGraphValidationUnitTests {
     fun testCyclicGraph() {
         val revisionGraphCyclic5 = TinkerRevisionGraph.build(
             GraphDescription("g1", listOf(
-                VertexDescription("g1", "a", "A", "./a"),
-                VertexDescription("g1", "b", "B", "./b"),
-                VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "d", "D", "./d"),
-                VertexDescription("g1", "e", "E", "./e"),
-                VertexDescription("g1", "f", "F", "./f"),
-                VertexDescription("g1", "g", "G", "./g"),
+                RevisionDescription("g1", "a", "A", "./a"),
+                RevisionDescription("g1", "b", "B", "./b"),
+                RevisionDescription("g1", "c", "C", "./c"),
+                RevisionDescription("g1", "d", "D", "./d"),
+                RevisionDescription("g1", "e", "E", "./e"),
+                RevisionDescription("g1", "f", "F", "./f"),
+                RevisionDescription("g1", "g", "G", "./g"),
 
                 ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
@@ -67,13 +67,13 @@ class TinkerRevisionGraphValidationUnitTests {
     fun testCyclicGraph2() {
         val revisionGraphCyclic5 = TinkerRevisionGraph.build(
             GraphDescription("g1", listOf(
-                VertexDescription("g1", "a", "A", "./a"),
-                VertexDescription("g1", "b", "B", "./b"),
-                VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "d", "D", "./d"),
-                VertexDescription("g1", "e", "E", "./e"),
-                VertexDescription("g1", "f", "F", "./f"),
-                VertexDescription("g1", "g", "G", "./g"),
+                RevisionDescription("g1", "a", "A", "./a"),
+                RevisionDescription("g1", "b", "B", "./b"),
+                RevisionDescription("g1", "c", "C", "./c"),
+                RevisionDescription("g1", "d", "D", "./d"),
+                RevisionDescription("g1", "e", "E", "./e"),
+                RevisionDescription("g1", "f", "F", "./f"),
+                RevisionDescription("g1", "g", "G", "./g"),
 
                 ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
@@ -97,10 +97,10 @@ class TinkerRevisionGraphValidationUnitTests {
     fun testIsConnectedValidGraph() {
         val miniValidGraph = TinkerRevisionGraph.build(
             GraphDescription("g2", listOf(
-                VertexDescription("g2", "a", "A", "./a"),
-                VertexDescription("g2", "b", "B", "./b"),
-                VertexDescription("g2", "c", "C", "./c"),
-                VertexDescription("g2", "e", "E", "./e")
+                RevisionDescription("g2", "a", "A", "./a"),
+                RevisionDescription("g2", "b", "B", "./b"),
+                RevisionDescription("g2", "c", "C", "./c"),
+                RevisionDescription("g2", "e", "E", "./e")
                 ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),
                 EdgeDescription("b", "c", EdgeLabel.SUCCESSOR),
@@ -124,11 +124,11 @@ class TinkerRevisionGraphValidationUnitTests {
     fun testHasOnlyOneRootInvalid() {
         val invalidGraph = TinkerRevisionGraph.build(
             GraphDescription("g1", listOf(
-                VertexDescription("g1", "a", "A", "./a"),
-                VertexDescription("g1", "b", "B", "./b"),
-                VertexDescription("g1", "c", "C", "./c"),
-                VertexDescription("g1", "e", "E", "./e"),
-                VertexDescription("g1", "f", "F", "./f")
+                RevisionDescription("g1", "a", "A", "./a"),
+                RevisionDescription("g1", "b", "B", "./b"),
+                RevisionDescription("g1", "c", "C", "./c"),
+                RevisionDescription("g1", "e", "E", "./e"),
+                RevisionDescription("g1", "f", "F", "./f")
 
                 ), listOf(
                 EdgeDescription("a", "b", EdgeLabel.SUCCESSOR),

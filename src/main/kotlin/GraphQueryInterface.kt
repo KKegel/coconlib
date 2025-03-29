@@ -17,7 +17,7 @@
 import context.Context
 import context.ContextType
 import graphcore.EdgeDescription
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
 class GraphQueryInterface(val revisionGraph: RevisionGraph) {
@@ -85,7 +85,7 @@ class GraphQueryInterface(val revisionGraph: RevisionGraph) {
         )
     }
 
-    fun getRevisions(): List<VertexDescription> {
+    fun getRevisions(): List<RevisionDescription> {
         return revisionGraph.getRevisions()
     }
 
@@ -93,7 +93,7 @@ class GraphQueryInterface(val revisionGraph: RevisionGraph) {
         return revisionGraph.getEdges()
     }
 
-    fun getRoot(): VertexDescription {
+    fun getRoot(): RevisionDescription {
         return revisionGraph.transform(revisionGraph.getRootRevision())
     }
 }

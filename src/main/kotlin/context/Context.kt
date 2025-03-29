@@ -16,12 +16,12 @@
 
 package context
 
-import graphcore.VertexDescription
+import graphcore.RevisionDescription
 
 data class Context(
     val contextType: ContextType,
     val cardinality: Int,
-    val participants: Set<VertexDescription>
+    val participants: Set<RevisionDescription>
 ){
     companion object {
         const val UNBOUNDED: Int = -1
