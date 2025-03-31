@@ -59,7 +59,7 @@ class SystemDescriptionUnitTests {
 
         assertEquals(3, graph1.getRevisions().size)
         assertEquals(3, graph2.getRevisions().size)
-        assertEquals("1a", graph1.transform(graph1.getRootRevision()).shortId)
+        assertEquals("1a", graph1.transform(graph1.getRootRevision()).revId)
         assertEquals(2, graph1.getEdges().size)
         assertEquals(2, graph2.getEdges().size)
     }

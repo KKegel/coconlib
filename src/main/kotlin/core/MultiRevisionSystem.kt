@@ -26,7 +26,7 @@ import system.SystemDescription
 
 class MultiRevisionSystem(
     private val parts: MutableSet<RevisionGraph>,
-    private val links: MutableSet<Relation>,
+    private val relations: MutableSet<Relation>,
     private val projections: MutableSet<Projection>) {
 
     private fun getGraphById(graphId: String): RevisionGraph {
@@ -58,9 +58,9 @@ class MultiRevisionSystem(
 
     private fun getRelationalContext(revisionShortId: String): Context {
         val revisionIds = mutableSetOf<String>(revisionShortId)
-        for (link in links) {
-            if (link.fromRevision == revisionShortId) {
-                revisionIds.add(link.toRevision)
+        for (relation in relations) {
+            if (relation.fromRevision == revisionShortId) {
+                revisionIds.add(relation.toRevision)
             }
         }
         val vertices: Set<RevisionDescription> = revisionIds.map { findRevision(it) }.toSet()
@@ -87,7 +87,7 @@ class MultiRevisionSystem(
     }
 
     fun getRelations(): Set<Relation> {
-        return links
+        return relations
     }
 
     fun getProjections(): Set<Projection> {
@@ -108,12 +108,12 @@ class MultiRevisionSystem(
     }
 
     fun addRelation(relation: Relation): Boolean {
-        links.add(relation)
+        relations.add(relation)
         return validate()
     }
 
     fun removeRelation(relation: Relation): Boolean {
-        links.remove(relation)
+        relations.remove(relation)
         return validate()
     }
 
@@ -152,7 +152,7 @@ class MultiRevisionSystem(
     }
 
     fun getDescription(): SystemDescription {
-        return SystemDescription(parts, links, projections)
+        return SystemDescription(parts, relations, projections)
     }
 
     fun serialize(): String {
@@ -176,9 +176,9 @@ class MultiRevisionSystem(
             }
         }
         //check that all the targets of the relations exist
-        for (link in links) {
-            if (!parts.any { it.hasRevision(link.fromRevision) } || !parts.any { it.hasRevision(link.toRevision) }) {
-                throw IllegalStateException("Invalid relation ${link.fromRevision} -> ${link.toRevision}!")
+        for (relation in relations) {
+            if (!parts.any { it.hasRevision(relation.fromRevision) } || !parts.any { it.hasRevision(relation.toRevision) }) {
+                throw IllegalStateException("Invalid relation ${relation.fromRevision} -> ${relation.toRevision}!")
             }
         }
         //check that all the sources of the projections exist
@@ -198,8 +198,8 @@ class MultiRevisionSystem(
             return MultiRevisionSystem(mutableSetOf(), mutableSetOf(), mutableSetOf())
         }
 
-        fun create(graphs: Set<RevisionGraph>, links: Set<Relation>, projections: Set<Projection>): MultiRevisionSystem {
-            return MultiRevisionSystem(graphs.toMutableSet(), links.toMutableSet(), projections.toMutableSet())
+        fun create(graphs: Set<RevisionGraph>, relations: Set<Relation>, projections: Set<Projection>): MultiRevisionSystem {
+            return MultiRevisionSystem(graphs.toMutableSet(), relations.toMutableSet(), projections.toMutableSet())
         }
 
     }

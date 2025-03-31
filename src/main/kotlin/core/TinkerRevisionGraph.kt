@@ -36,17 +36,17 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return graph.toString()
     }
 
-    override fun hasRevision(shortId: String): Boolean {
+    override fun hasRevision(revId: String): Boolean {
         return traversal().with(graph)
             .V()
-            .has(id, shortId)
+            .has(id, revId)
             .hasNext()
     }
 
     override fun hasRevision(vertex: RevisionDescription): Boolean {
         return traversal().with(graph)
             .V()
-            .has(id, vertex.shortId)
+            .has(id, vertex.revId)
             .hasNext()
     }
 
@@ -63,11 +63,11 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     }
 
     override fun addRevision(vertex: RevisionDescription) {
-        assert(vertex.shortId.isNotEmpty()) { "Vertex ID must not be empty" }
+        assert(vertex.revId.isNotEmpty()) { "Vertex ID must not be empty" }
         assert(vertex.graph == graphId) { "Graph ID must match" }
         val g = traversal().with(graph)
         g.addV(REVISION)
-            .property(id, vertex.shortId)
+            .property(id, vertex.revId)
             .property("description", vertex.description)
             .property("path", vertex.location)
             .property("payload", vertex.payload)
@@ -98,7 +98,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     override fun removeRevision(vertex: RevisionDescription) {
         traversal().with(graph)
             .V()
-            .has(id, vertex.shortId)
+            .has(id, vertex.revId)
             .next()
             .remove()
     }
@@ -166,17 +166,17 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     }
 
     override fun transform(revisionDescription: RevisionDescription): Vertex {
-        return transform(revisionDescription.shortId)
+        return transform(revisionDescription.revId)
     }
 
     override fun transform(edgeDescription: EdgeDescription): Edge {
         return transform(edgeDescription.sourceShortId, edgeDescription.targetShortId)
     }
 
-    override fun transform(shortId: String): Vertex {
+    override fun transform(revId: String): Vertex {
         return traversal().with(graph)
             .V()
-            .has(id, shortId)
+            .has(id, revId)
             .next()
     }
 
@@ -282,10 +282,10 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return path
     }
 
-    override fun getRevision(shortId: String): Vertex {
+    override fun getRevision(revId: String): Vertex {
         return traversal().with(graph)
             .V()
-            .has(id, shortId)
+            .has(id, revId)
             .next()
     }
 

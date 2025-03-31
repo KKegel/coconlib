@@ -24,11 +24,11 @@ import org.apache.tinkerpop.gremlin.structure.Vertex
 
 abstract class RevisionGraph(val graphId: String) {
 
-    abstract fun hasRevision(shortId: String): Boolean
+    abstract fun hasRevision(revId: String): Boolean
     abstract fun hasRevision(vertex: RevisionDescription): Boolean
     abstract fun hasEdge(edge: EdgeDescription): Boolean
 
-    abstract fun getRevision(shortId: String): Vertex
+    abstract fun getRevision(revId: String): Vertex
     abstract fun getEdge(sourceShortId: String, targetShortId: String): Edge
 
     abstract fun addRevision(vertex: RevisionDescription)
@@ -41,7 +41,7 @@ abstract class RevisionGraph(val graphId: String) {
 
     abstract fun transform(revisionDescription: RevisionDescription): Vertex
     abstract fun transform(vertex: Vertex): RevisionDescription
-    abstract fun transform(shortId: String): Vertex
+    abstract fun transform(revId: String): Vertex
     abstract fun transform(edgeDescription: EdgeDescription): Edge
     abstract fun transform(sourceShortId: String, targetShortId: String): Edge
     abstract fun transform(edge: Edge): EdgeDescription

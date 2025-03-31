@@ -25,7 +25,7 @@ class VertexDescriptionUnitTests {
     fun testInit() {
         val vertex = RevisionDescription("graph1", "short1", "long1", "location1", "payload1")
         assertEquals("graph1", vertex.graph)
-        assertEquals("short1", vertex.shortId)
+        assertEquals("short1", vertex.revId)
         assertEquals("long1", vertex.description)
         assertEquals("location1", vertex.location)
         assertEquals("payload1", vertex.payload)
@@ -88,7 +88,7 @@ class VertexDescriptionUnitTests {
         val serialized = "V;graph1;short1;long1;location1;payload1"
         val vertex = RevisionDescription.parse(serialized)
         assertEquals("graph1", vertex.graph)
-        assertEquals("short1", vertex.shortId)
+        assertEquals("short1", vertex.revId)
         assertEquals("long1", vertex.description)
         assertEquals("location1", vertex.location)
         assertEquals("payload1", vertex.payload)

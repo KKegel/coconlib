@@ -75,14 +75,14 @@ class TinkerRevisionGraphQueryUnitTests {
     @Test
     fun getRootRevisionTest() {
         val root = revisionGraph.getRootRevision()
-        assertEquals("a", revisionGraph.transform(root).shortId)
+        assertEquals("a", revisionGraph.transform(root).revId)
     }
 
    @Test
    fun getLeafRevisionsTest() {
         val leafs = revisionGraph.getLeafRevisions()
         assertEquals(3, leafs.size)
-        assertTrue(leafs.map { revisionGraph.transform(it).shortId }.containsAll(listOf("f", "k", "p")))
+        assertTrue(leafs.map { revisionGraph.transform(it).revId }.containsAll(listOf("f", "k", "p")))
    }
 
     /**
@@ -93,64 +93,64 @@ class TinkerRevisionGraphQueryUnitTests {
         val vertex = revisionGraph.getRevision("f")
         val path = revisionGraph.getPathToRoot(vertex, 0)
         assertEquals(1, path.size)
-        assertEquals("f", revisionGraph.transform(path[0]).shortId)
+        assertEquals("f", revisionGraph.transform(path[0]).revId)
     }
 
     @Test
     fun testGetPathToRootDepth1() {
         val vertex = revisionGraph.getRevision("f")
         val path = revisionGraph.getPathToRoot(vertex, 1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(2, path.size)
-        assertEquals("f", revisionGraph.transform(path[0]).shortId)
-        assertEquals("e", revisionGraph.transform(path[1]).shortId)
+        assertEquals("f", revisionGraph.transform(path[0]).revId)
+        assertEquals("e", revisionGraph.transform(path[1]).revId)
     }
 
     @Test
     fun testGetPathToRootDepth2() {
         val vertex = revisionGraph.getRevision("f")
         val path = revisionGraph.getPathToRoot(vertex, 2)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(3, path.size)
-        assertEquals("f", revisionGraph.transform(path[0]).shortId)
-        assertEquals("e", revisionGraph.transform(path[1]).shortId)
-        assertEquals("b", revisionGraph.transform(path[2]).shortId)
+        assertEquals("f", revisionGraph.transform(path[0]).revId)
+        assertEquals("e", revisionGraph.transform(path[1]).revId)
+        assertEquals("b", revisionGraph.transform(path[2]).revId)
     }
 
     @Test
     fun testGetPathToRootDepthUnbounded() {
         val vertex = revisionGraph.getRevision("f")
         val path = revisionGraph.getPathToRoot(vertex, -1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(4, path.size)
-        assertEquals("f", revisionGraph.transform(path[0]).shortId)
-        assertEquals("e", revisionGraph.transform(path[1]).shortId)
-        assertEquals("b", revisionGraph.transform(path[2]).shortId)
-        assertEquals("a", revisionGraph.transform(path[3]).shortId)
+        assertEquals("f", revisionGraph.transform(path[0]).revId)
+        assertEquals("e", revisionGraph.transform(path[1]).revId)
+        assertEquals("b", revisionGraph.transform(path[2]).revId)
+        assertEquals("a", revisionGraph.transform(path[3]).revId)
     }
 
     @Test
     fun testGetPathToRootDepthUnbounded2() {
         val vertex = revisionGraph.getRevision("p")
         val path = revisionGraph.getPathToRoot(vertex, -1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(5, path.size)
-        assertEquals("p", revisionGraph.transform(path[0]).shortId)
-        assertEquals("g", revisionGraph.transform(path[1]).shortId)
-        assertEquals("e", revisionGraph.transform(path[2]).shortId)
-        assertEquals("b", revisionGraph.transform(path[3]).shortId)
-        assertEquals("a", revisionGraph.transform(path[4]).shortId)
+        assertEquals("p", revisionGraph.transform(path[0]).revId)
+        assertEquals("g", revisionGraph.transform(path[1]).revId)
+        assertEquals("e", revisionGraph.transform(path[2]).revId)
+        assertEquals("b", revisionGraph.transform(path[3]).revId)
+        assertEquals("a", revisionGraph.transform(path[4]).revId)
     }
 
     @Test
     fun testGetPathToRootDepthUnboundedMiddle() {
         val vertex = revisionGraph.getRevision("e")
         val path = revisionGraph.getPathToRoot(vertex, -1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(3, path.size)
-        assertEquals("e", revisionGraph.transform(path[0]).shortId)
-        assertEquals("b", revisionGraph.transform(path[1]).shortId)
-        assertEquals("a", revisionGraph.transform(path[2]).shortId)
+        assertEquals("e", revisionGraph.transform(path[0]).revId)
+        assertEquals("b", revisionGraph.transform(path[1]).revId)
+        assertEquals("a", revisionGraph.transform(path[2]).revId)
     }
 
     /**
@@ -164,21 +164,21 @@ class TinkerRevisionGraphQueryUnitTests {
     fun testGetPathToRootUnboundedMergeTraversal() {
         val vertex = revisionGraph.getRevision("k")
         val path = revisionGraph.getPathToRoot(vertex, -1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(3, path.size)
-        assertEquals("k", revisionGraph.transform(path[0]).shortId)
-        assertEquals("j", revisionGraph.transform(path[1]).shortId)
-        assertEquals("a", revisionGraph.transform(path[2]).shortId)
+        assertEquals("k", revisionGraph.transform(path[0]).revId)
+        assertEquals("j", revisionGraph.transform(path[1]).revId)
+        assertEquals("a", revisionGraph.transform(path[2]).revId)
     }
 
     @Test
     fun testGetPathToRootUnboundedMergeTraversalBounded() {
         val vertex = revisionGraph.getRevision("j")
         val path = revisionGraph.getPathToRoot(vertex, 1)
-        print(path.map { revisionGraph.transform(it).shortId })
+        print(path.map { revisionGraph.transform(it).revId })
         assertEquals(2, path.size)
-        assertEquals("j", revisionGraph.transform(path[0]).shortId)
-        assertEquals("a", revisionGraph.transform(path[1]).shortId)
+        assertEquals("j", revisionGraph.transform(path[0]).revId)
+        assertEquals("a", revisionGraph.transform(path[1]).revId)
     }
 
     /**
@@ -193,16 +193,16 @@ class TinkerRevisionGraphQueryUnitTests {
         val vertex = revisionGraph.getRevision("p")
         val neighbours = revisionGraph.getNeighbors(vertex, 0)
         assertEquals(1, neighbours.size)
-        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.contains("p"))
+        assertTrue(neighbours.map { revisionGraph.transform(it).revId }.contains("p"))
     }
 
     @Test
     fun getNeighbours1BoundedTest() {
         val vertex = revisionGraph.getRevision("p")
         val neighbours = revisionGraph.getNeighbors(vertex, 1)
-        println(neighbours.map { revisionGraph.transform(it).shortId })
+        println(neighbours.map { revisionGraph.transform(it).revId })
         assertEquals(1, neighbours.size)
-        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.contains("p"))
+        assertTrue(neighbours.map { revisionGraph.transform(it).revId }.contains("p"))
     }
 
     @Test
@@ -210,16 +210,16 @@ class TinkerRevisionGraphQueryUnitTests {
         val vertex = revisionGraph.getRevision("p")
         val neighbours = revisionGraph.getNeighbors(vertex, 2)
         assertEquals(2, neighbours.size)
-        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.containsAll(listOf("f", "p")))
+        assertTrue(neighbours.map { revisionGraph.transform(it).revId }.containsAll(listOf("f", "p")))
     }
 
     @Test
     fun getNeighboursUnboundedTest() {
         val vertex = revisionGraph.getRevision("p")
         val neighbours = revisionGraph.getNeighbors(vertex, -1)
-        println(neighbours.map { revisionGraph.transform(it).shortId })
+        println(neighbours.map { revisionGraph.transform(it).revId })
         assertEquals(3, neighbours.size)
-        assertTrue(neighbours.map { revisionGraph.transform(it).shortId }.containsAll(listOf("f", "k", "p")))
+        assertTrue(neighbours.map { revisionGraph.transform(it).revId }.containsAll(listOf("f", "k", "p")))
     }
 
 }

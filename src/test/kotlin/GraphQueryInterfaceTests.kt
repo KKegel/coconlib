@@ -104,7 +104,7 @@ class GraphQueryInterfaceTests {
         assertEquals(Int.MAX_VALUE, context.cardinality)
         assertEquals(
             setOf("f", "e", "b", "a"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -122,7 +122,7 @@ class GraphQueryInterfaceTests {
         assertEquals(2, context.cardinality)
         assertEquals(
             setOf("f", "e", "b"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -140,7 +140,7 @@ class GraphQueryInterfaceTests {
         assertEquals(Int.MAX_VALUE, context.cardinality)
         assertEquals(
             setOf("a", "j", "k"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -158,7 +158,7 @@ class GraphQueryInterfaceTests {
         assertEquals(Int.MAX_VALUE, context.cardinality)
         assertEquals(
             setOf("f", "k", "p"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -176,7 +176,7 @@ class GraphQueryInterfaceTests {
         assertEquals(0, context.cardinality)
         assertEquals(
             setOf("p"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -194,7 +194,7 @@ class GraphQueryInterfaceTests {
         assertEquals(1, context.cardinality)
         assertEquals(
             setOf("p"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 
@@ -212,7 +212,7 @@ class GraphQueryInterfaceTests {
         assertEquals(2, context.cardinality)
         assertEquals(
             setOf("p", "f"),
-            context.participants.map { it.shortId }.toSet()
+            context.participants.map { it.revId }.toSet()
         )
     }
 

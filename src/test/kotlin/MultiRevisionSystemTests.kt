@@ -161,9 +161,9 @@ class MultiRevisionSystemTests {
         val context = system.findLocalContext(revisionGraphX.graphId, "X.e", ContextType.SPACE, 1)
         assertEquals(ContextType.SPACE, context.contextType)
         assertEquals(1, context.cardinality)
-        //println(context.participants.map { it.shortId })
+        //println(context.participants.map { it.revId })
         assertEquals(3, context.participants.size)
-        assertEquals(setOf("X.p", "X.f", "X.e"), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf("X.p", "X.f", "X.e"), context.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -189,7 +189,7 @@ class MultiRevisionSystemTests {
         assertEquals(ContextType.TIME, context.contextType)
         assertEquals(Int.MAX_VALUE, context.cardinality)
         assertEquals(4, context.participants.size)
-        assertEquals(setOf("Y.a", "Y.b", "Y.c", "Y.z"), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf("Y.a", "Y.b", "Y.c", "Y.z"), context.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -215,7 +215,7 @@ class MultiRevisionSystemTests {
         assertEquals(ContextType.RELATIONAL, context.contextType)
         assertEquals(0, context.cardinality)
         assertEquals(2, context.participants.size)
-        assertEquals(setOf("X.p", "Y.z"), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf("X.p", "Y.z"), context.participants.map { it.revId }.toSet())
     }
 
     @Test
@@ -224,7 +224,7 @@ class MultiRevisionSystemTests {
         assertEquals(ContextType.RELATIONAL, context.contextType)
         assertEquals(0, context.cardinality)
         assertEquals(1, context.participants.size)
-        assertEquals(setOf("Y.z"), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf("Y.z"), context.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -250,7 +250,7 @@ class MultiRevisionSystemTests {
         assertEquals(ContextType.PROJECTIVE, context.contextType)
         assertEquals(0, context.cardinality)
         assertEquals(1, context.participants.size)
-        assertEquals(setOf("A"), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf("A"), context.participants.map { it.revId }.toSet())
     }
 
     @Test
@@ -259,7 +259,7 @@ class MultiRevisionSystemTests {
         assertEquals(ContextType.PROJECTIVE, context.contextType)
         assertEquals(0, context.cardinality)
         assertEquals(0, context.participants.size)
-        assertEquals(setOf(), context.participants.map { it.shortId }.toSet())
+        assertEquals(setOf(), context.participants.map { it.revId }.toSet())
     }
 
 }
