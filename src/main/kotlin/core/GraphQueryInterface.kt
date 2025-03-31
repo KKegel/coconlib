@@ -87,4 +87,24 @@ class GraphQueryInterface(private val revisionGraph: RevisionGraph) {
     fun getRoot(): RevisionDescription {
         return revisionGraph.transform(revisionGraph.getRootRevision())
     }
+
+    fun addRevision(revision: RevisionDescription) {
+        revisionGraph.addRevision(revision)
+    }
+
+    fun addEdge(edge: EdgeDescription) {
+        revisionGraph.addEdge(edge)
+    }
+
+    fun removeRevision(revision: RevisionDescription) {
+        revisionGraph.removeRevision(revision)
+    }
+
+    fun removeEdge(edge: EdgeDescription) {
+        revisionGraph.removeEdge(edge)
+    }
+
+    fun validate(): Boolean{
+        return revisionGraph.validate()
+    }
 }

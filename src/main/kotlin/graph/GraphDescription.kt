@@ -25,6 +25,9 @@ data class GraphDescription(
     init {
         assert(id.isNotEmpty()) { "ID must not be empty" }
         assert(id.contains(";").not()) { "ID must not contain semicolon" }
+        vertices.forEach {
+            assert(it.graph == id) { "Graph ID in vertex does not match graph ID" }
+        }
     }
 
     fun serialize(): String {

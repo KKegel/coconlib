@@ -24,6 +24,8 @@ data class Projection(val projectionId: String, val sources: List<String>, val t
 
     companion object {
 
+        const val PROJECTION = "PROJECTION"
+
         fun serialize(projection: Projection): String {
             return "P;${projection.projectionId};${projection.sources.joinToString(",")};${projection.target}"
         }

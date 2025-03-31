@@ -36,17 +36,17 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return graph.toString()
     }
 
+    override fun hasRevision(shortId: String): Boolean {
+        return traversal().with(graph)
+            .V()
+            .has(id, shortId)
+            .hasNext()
+    }
+
     override fun hasRevision(vertex: RevisionDescription): Boolean {
         return traversal().with(graph)
             .V()
             .has(id, vertex.shortId)
-            .hasNext()
-    }
-
-    override fun hasRevision(longId: String): Boolean {
-        return traversal().with(graph)
-            .V()
-            .has("longId", longId)
             .hasNext()
     }
 
@@ -63,10 +63,12 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     }
 
     override fun addRevision(vertex: RevisionDescription) {
+        assert(vertex.shortId.isNotEmpty()) { "Vertex ID must not be empty" }
+        assert(vertex.graph == graphId) { "Graph ID must match" }
         val g = traversal().with(graph)
         g.addV(REVISION)
             .property(id, vertex.shortId)
-            .property("longId", vertex.longId)
+            .property("description", vertex.description)
             .property("path", vertex.location)
             .property("payload", vertex.payload)
             .next()
@@ -142,7 +144,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             RevisionDescription(
                 graphId,
                 vertex.property<String>(id).value().toString(),
-                vertex.property<String>("longId").value().toString(),
+                vertex.property<String>("description").value().toString(),
                 vertex.property<String>("path").value().toString(),
                 vertex.property<String>("payload").value().toString()
             )
@@ -193,7 +195,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return RevisionDescription(
             graphId,
             vertex.property<String>(id).value().toString(),
-            vertex.property<String>("longId").value().toString(),
+            vertex.property<String>("description").value().toString(),
             vertex.property<String>("path").value().toString(),
             vertex.property<String>("payload").value().toString()
         )
@@ -287,13 +289,6 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             .next()
     }
 
-    override fun getRevisionByLongId(longId: String): Vertex {
-        return traversal().with(graph)
-            .V()
-            .has("longId", longId)
-            .next()
-    }
-
     override fun getEdge(sourceShortId: String, targetShortId: String): Edge {
         return traversal().with(graph)
             .E()
@@ -311,7 +306,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             return setOf(vertex)
         }
         val nthPredecessor = getPathToRoot(vertex, recursionDepth).last()
-        return getLeafsFromVertex(nthPredecessor).toSet()
+        return getLeafsFromVertex(nthPredecessor).toSet().plus(vertex)
     }
 
     fun hasOnlyOneRoot(): Boolean {
@@ -418,6 +413,16 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return true
     }
 
+    private fun matchingGraphId(): Boolean {
+        val revisions = getRevisions()
+        for (revision in revisions) {
+            if (revision.graph != graphId) {
+                return false
+            }
+        }
+        return true
+    }
+
     /**
      * Validates the graph for the following conditions:
      * - Graph has only one root
@@ -435,6 +440,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         if (!twoIncomingSuccessorsRequiresMerge()) throw IllegalStateException("Two incoming successors require a merge edge")
 
         if (hasCycles(depth)) throw IllegalStateException("Graph has cycles within depth $depth")
+        if (!matchingGraphId()) throw IllegalStateException("Graph ID does not match revision graph IDs")
 
         /*
         TODO: more validity checks possible

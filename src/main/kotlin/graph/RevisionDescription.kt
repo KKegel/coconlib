@@ -19,7 +19,7 @@ package graph
 data class RevisionDescription(
     val graph: String,
     val shortId: String,
-    val longId: String,
+    val description: String,
     val location: String,
     val payload: String = ""
 ){
@@ -27,11 +27,11 @@ data class RevisionDescription(
     init {
         assert(graph.isNotEmpty()) { "Graph must not be empty" }
         assert(shortId.isNotEmpty()) { "Short ID must not be empty" }
-        assert(longId.isNotEmpty()) { "Long ID must not be empty" }
+        assert(description.isNotEmpty()) { "Description must not be empty" }
         assert(location.isNotEmpty()) { "Location must not be empty" }
         assert(graph.contains(";").not()) { "Graph must not contain semicolon" }
         assert(shortId.contains(";").not()) { "Short ID must not contain semicolon" }
-        assert(longId.contains(";").not()) { "Long ID must not contain semicolon" }
+        assert(description.contains(";").not()) { "Description must not contain semicolon" }
         assert(location.contains(";").not()) { "Location must not contain semicolon" }
         assert(payload.contains(";").not()) { "Payload must not contain semicolon" }
     }
@@ -44,7 +44,7 @@ data class RevisionDescription(
 
         fun serialize(revisionDescription: RevisionDescription): String {
             return "V;${revisionDescription.graph};${revisionDescription.shortId};" +
-                    "${revisionDescription.longId};${revisionDescription.location};${revisionDescription.payload}"
+                    "${revisionDescription.description};${revisionDescription.location};${revisionDescription.payload}"
         }
 
         fun parse(serialized: String): RevisionDescription {

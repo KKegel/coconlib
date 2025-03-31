@@ -21,7 +21,7 @@ data class Relation(
     val toGraph: String,
     val fromRevision: String,
     val toRevision: String,
-    val payload: String
+    val payload: String = ""
 ){
 
     fun serialize(): String {
