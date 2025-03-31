@@ -1,5 +1,3 @@
-package core
-
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -15,6 +13,8 @@ package core
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package core
 
 import graph.EdgeDescription
 import graph.GraphDescription

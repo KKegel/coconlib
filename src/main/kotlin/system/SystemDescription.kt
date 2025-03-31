@@ -1,8 +1,3 @@
-package system
-
-import graph.GraphDescription
-import core.RevisionGraph
-
 /**
  *  Copyright 2025 Karl Kegel
  *
@@ -18,6 +13,11 @@ import core.RevisionGraph
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+package system
+
+import graph.GraphDescription
+import core.RevisionGraph
 
 data class SystemDescription(val parts: Set<RevisionGraph>,
                              val relations: Set<Relation>,
