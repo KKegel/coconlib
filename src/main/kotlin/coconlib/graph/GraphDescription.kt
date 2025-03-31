@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package graph
+package coconlib.graph
 
 data class GraphDescription(
     val id: String,

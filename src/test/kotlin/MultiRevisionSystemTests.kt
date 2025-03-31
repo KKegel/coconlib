@@ -14,19 +14,19 @@
  *  limitations under the License.
  */
 
-import context.Context
-import context.ContextType
-import core.MultiRevisionSystem
-import core.RevisionGraph
-import core.TinkerRevisionGraph
-import graph.EdgeDescription
-import graph.EdgeLabel
-import graph.GraphDescription
-import graph.RevisionDescription
+import coconlib.context.Context
+import coconlib.context.ContextType
+import coconlib.core.MultiRevisionSystem
+import coconlib.core.RevisionGraph
+import coconlib.core.TinkerRevisionGraph
+import coconlib.graph.EdgeDescription
+import coconlib.graph.EdgeLabel
+import coconlib.graph.GraphDescription
+import coconlib.graph.RevisionDescription
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import system.Projection
-import system.Relation
+import coconlib.system.Projection
+import coconlib.system.Relation
 import kotlin.test.assertEquals
 
 class MultiRevisionSystemTests {

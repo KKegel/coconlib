@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-package core
+package coconlib.core
 
-import graph.EdgeDescription
-import graph.GraphDescription
-import graph.RevisionDescription
+import coconlib.graph.EdgeDescription
+import coconlib.graph.GraphDescription
+import coconlib.graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Edge
 import org.apache.tinkerpop.gremlin.structure.Vertex
 

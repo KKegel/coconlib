@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import graph.EdgeDescription
-import graph.EdgeLabel
+import coconlib.graph.EdgeDescription
+import coconlib.graph.EdgeLabel
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals

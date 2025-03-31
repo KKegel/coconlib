@@ -14,15 +14,15 @@
  *  limitations under the License.
  */
 
-package core
+package coconlib.core
 
-import context.Context
-import context.ContextType
-import graph.EdgeDescription
-import graph.RevisionDescription
-import system.Relation
-import system.Projection
-import system.SystemDescription
+import coconlib.context.Context
+import coconlib.context.ContextType
+import coconlib.graph.EdgeDescription
+import coconlib.graph.RevisionDescription
+import coconlib.system.Relation
+import coconlib.system.Projection
+import coconlib.system.SystemDescription
 
 class MultiRevisionSystem(
     private val parts: MutableSet<RevisionGraph>,

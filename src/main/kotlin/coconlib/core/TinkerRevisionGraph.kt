@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 
-package core
+package coconlib.core
 
-import graph.EdgeDescription
-import graph.EdgeLabel
-import graph.GraphDescription
-import graph.RevisionDescription
+import coconlib.graph.EdgeDescription
+import coconlib.graph.EdgeLabel
+import coconlib.graph.GraphDescription
+import coconlib.graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal.Symbols.id
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__

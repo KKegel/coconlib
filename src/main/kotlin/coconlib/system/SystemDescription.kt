@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-package system
+package coconlib.system
 
-import graph.GraphDescription
-import core.RevisionGraph
+import coconlib.graph.GraphDescription
+import coconlib.core.RevisionGraph
 
 data class SystemDescription(val parts: Set<RevisionGraph>,
                              val relations: Set<Relation>,

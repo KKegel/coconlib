@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 
-import context.Context
-import context.ContextType
-import graph.EdgeDescription
-import graph.EdgeLabel
-import graph.GraphDescription
-import graph.RevisionDescription
+import coconlib.context.Context
+import coconlib.context.ContextType
+import coconlib.graph.EdgeDescription
+import coconlib.graph.EdgeLabel
+import coconlib.graph.GraphDescription
+import coconlib.graph.RevisionDescription
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
-import core.GraphQueryInterface
-import core.TinkerRevisionGraph
+import coconlib.core.GraphQueryInterface
+import coconlib.core.TinkerRevisionGraph
 
 class GraphQueryInterfaceTests {
 

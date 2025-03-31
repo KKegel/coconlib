@@ -14,10 +14,8 @@
  *  limitations under the License.
  */
 
-package core
+package coconlib.context
 
-object Configuration {
-
-    public var LOOKAHEAD: Int = 10
-
+enum class ContextType {
+    SPACE, TIME, RELATIONAL, PROJECTIVE
 }

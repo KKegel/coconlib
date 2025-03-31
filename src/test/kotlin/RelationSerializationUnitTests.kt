@@ -15,7 +15,7 @@
  */
 
 import org.junit.jupiter.api.Test
-import system.Relation
+import coconlib.system.Relation
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class RelationSerializationUnitTests {

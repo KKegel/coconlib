@@ -14,16 +14,8 @@
  *  limitations under the License.
  */
 
-package context
+package coconlib.graph
 
-import graph.RevisionDescription
-
-data class Context(
-    val contextType: ContextType,
-    val cardinality: Int,
-    val participants: Set<RevisionDescription>
-){
-    companion object {
-        const val UNBOUNDED: Int = -1
-    }
+enum class EdgeLabel {
+    SUCCESSOR, MERGE
 }

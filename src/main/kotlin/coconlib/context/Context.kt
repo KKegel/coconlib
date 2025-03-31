@@ -14,8 +14,16 @@
  *  limitations under the License.
  */
 
-package context
+package coconlib.context
 
-enum class ContextType {
-    SPACE, TIME, RELATIONAL, PROJECTIVE
+import coconlib.graph.RevisionDescription
+
+data class Context(
+    val contextType: ContextType,
+    val cardinality: Int,
+    val participants: Set<RevisionDescription>
+){
+    companion object {
+        const val UNBOUNDED: Int = -1
+    }
 }

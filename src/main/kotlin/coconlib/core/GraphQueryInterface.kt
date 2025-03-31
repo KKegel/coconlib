@@ -1,4 +1,4 @@
-package core
+package coconlib.core
 
 /**
  *  Copyright 2025 Karl Kegel
@@ -16,10 +16,10 @@ package core
  *  limitations under the License.
  */
 
-import context.Context
-import context.ContextType
-import graph.EdgeDescription
-import graph.RevisionDescription
+import coconlib.context.Context
+import coconlib.context.ContextType
+import coconlib.graph.EdgeDescription
+import coconlib.graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
 class GraphQueryInterface(private val revisionGraph: RevisionGraph) {

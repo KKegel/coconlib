@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package system
+package coconlib.system
 
 data class Relation(
     val fromGraph: String,

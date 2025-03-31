@@ -14,8 +14,10 @@
  *  limitations under the License.
  */
 
-package graph
+package coconlib.core
 
-enum class EdgeLabel {
-    SUCCESSOR, MERGE
+object Configuration {
+
+    public var LOOKAHEAD: Int = 10
+
 }

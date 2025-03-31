@@ -14,14 +14,14 @@
  *  limitations under the License.
  */
 
-import graph.EdgeDescription
-import graph.EdgeLabel
-import graph.GraphDescription
-import graph.RevisionDescription
+import coconlib.graph.EdgeDescription
+import coconlib.graph.EdgeLabel
+import coconlib.graph.GraphDescription
+import coconlib.graph.RevisionDescription
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import core.TinkerRevisionGraph
+import coconlib.core.TinkerRevisionGraph
 import kotlin.test.assertTrue
 
 class TinkerRevisionGraphValidationUnitTests {

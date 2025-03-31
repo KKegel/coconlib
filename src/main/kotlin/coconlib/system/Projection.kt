@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package system
+package coconlib.system
 
 data class Projection(val projectionId: String, val sources: List<String>, val target: String) {
 

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import graph.RevisionDescription
+import coconlib.graph.RevisionDescription
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals

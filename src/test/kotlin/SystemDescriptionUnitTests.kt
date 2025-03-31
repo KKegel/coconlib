@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 
-import core.TinkerRevisionGraph
-import system.Relation
-import system.SystemDescription
+import coconlib.core.TinkerRevisionGraph
+import coconlib.system.Relation
+import coconlib.system.SystemDescription
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
