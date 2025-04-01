@@ -4,6 +4,8 @@
 The library provides all core functionality for creating, editing and querying revision graphs and multi-revision graphs.
 *coconlib* is designed to be easily extensible, technology-agnostic and made to work on any underlying physical revision system.
 
+The official *coconlib* commandline application is available as **[cocon-cli](https://github.com/KKegel/cocon-cli)**.
+
 ## Contributing
 
 This project is open source and we welcome contributions from the community.
