@@ -433,6 +433,10 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
      */
     override fun validate(depth: Int): Boolean {
 
+        //no duplicate IDs
+        val allRevisions = getRevisions()
+        assert(allRevisions.size == allRevisions.map { it.revId }.toSet().size) { "Duplicate revision IDs found!" }
+
         if (!hasOnlyOneRoot()) throw IllegalStateException("Graph has more than one root")
 
         if (!maxTwoIncomingSuccessors()) throw IllegalStateException("Vertex has more than two incoming successors")

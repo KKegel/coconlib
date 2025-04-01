@@ -130,7 +130,7 @@ class MultiRevisionSystem(
     fun addRevision(graphId: String, revision: RevisionDescription): Boolean {
         val graph = getGraphById(graphId)
         graph.addRevision(revision)
-        return graph.validate(Configuration.LOOKAHEAD)
+        return validate()
     }
 
     fun removeRevision(graphId: String, revision: RevisionDescription): Boolean {
@@ -165,6 +165,9 @@ class MultiRevisionSystem(
      * It cannot prove the correctness of the system.
      */
     fun validate(): Boolean {
+        //check that all revisions have unique IDs
+        val allRevisions = parts.toList().flatMap { it.getRevisions() }
+        assert(allRevisions.size == allRevisions.map { it.revId }.toSet().size)
         //check that no two graphs have the same ID
         if(parts.size != parts.map { it.graphId }.toSet().size){
             throw IllegalStateException("Duplicate graph IDs found!")
