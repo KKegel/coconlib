@@ -73,15 +73,6 @@ class MultiRevisionSystem(
             RevisionDescription(Projection.PROJECTION, it.projectionId, Projection.PROJECTION, it.target) }.toSet())
     }
 
-    private fun findRevision(revisionShortId: String): RevisionDescription {
-        for (graph in parts) {
-            if (graph.hasRevision(revisionShortId)) {
-                return graph.transform(graph.getRevision(revisionShortId))
-            }
-        }
-        throw IllegalArgumentException("Revision with short ID $revisionShortId not found in active core")
-    }
-
     fun getRevisionGraphs(): Set<RevisionGraph> {
         return parts
     }
@@ -154,6 +145,36 @@ class MultiRevisionSystem(
         val graph = getGraphById(graphId)
         graph.addRevisionWithUnification(revision, edgeA, edgeB)
         return validate()
+    }
+
+    fun removeRevision(revisionId: String): Boolean {
+        val revision = findRevision(revisionId)
+        return removeRevision(revision.graph, revision)
+    }
+
+    fun findEdges(revisionId: String): List<EdgeDescription> {
+        val revision = findRevision(revisionId)
+        val graph = getGraphById(revision.graph)
+        return graph.getEdges().filter { it.sourceShortId == revision.revId || it.targetShortId == revision.revId }
+    }
+
+    fun findProjections(revisionId: String): List<Projection> {
+        val revision = findRevision(revisionId)
+        return projections.filter { it.sources.contains(revision.revId) }
+    }
+
+    fun findRelations(revisionId: String): List<Relation> {
+        val revision = findRevision(revisionId)
+        return relations.filter { it.fromRevision == revision.revId || it.toRevision == revision.revId }
+    }
+
+    fun findRevision(revisionId: String): RevisionDescription {
+        for (graph in parts) {
+            if (graph.hasRevision(revisionId)) {
+                return graph.transform(graph.getRevision(revisionId))
+            }
+        }
+        throw IllegalArgumentException("Revision with ID $revisionId not found in active core")
     }
 
     fun removeRevision(graphId: String, revision: RevisionDescription): Boolean {
