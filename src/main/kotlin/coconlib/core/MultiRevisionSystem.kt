@@ -137,10 +137,14 @@ class MultiRevisionSystem(
         return validate()
     }
 
-    fun addRevision(graphId: String, revision: RevisionDescription): Boolean {
+    fun addRevision(graphId: String, revision: RevisionDescription, safe: Boolean = true): Boolean {
         val graph = getGraphById(graphId)
         graph.addRevision(revision)
-        return validate()
+        return if (safe) {
+            validate()
+        } else {
+            true
+        }
     }
 
     fun removeRevision(graphId: String, revision: RevisionDescription): Boolean {
@@ -156,10 +160,14 @@ class MultiRevisionSystem(
         return validate()
     }
 
-    fun addEdge(graphId: String, edge: EdgeDescription): Boolean {
+    fun addEdge(graphId: String, edge: EdgeDescription, safe: Boolean = true): Boolean {
         val graph = getGraphById(graphId)
         graph.addEdge(edge)
-        return graph.validate()
+        return if (safe) {
+            validate()
+        } else {
+            true
+        }
     }
 
     fun removeEdge(graphId: String, edge: EdgeDescription): Boolean {
