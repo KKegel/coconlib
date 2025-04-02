@@ -94,6 +94,10 @@ class MultiRevisionSystem(
         return projections
     }
 
+    fun getParts(): Set<RevisionGraph> {
+        return parts
+    }
+
     fun initNewGraph(graphId: String): Boolean {
         val newGraph = TinkerRevisionGraph(graphId)
         parts.add(newGraph)
@@ -102,7 +106,13 @@ class MultiRevisionSystem(
 
     fun removeGraph(graphId: String): Boolean {
         val graph = getGraphById(graphId)
-        //TODO remove all relations and projections targeting elements of the graph
+        val revisionIds = graph.getRevisions().map { it.revId }
+        //remove all relations having one of the revisions as source
+        relations.removeIf { it.fromRevision in revisionIds }
+        //remove all relations having one of the revisions as target
+        relations.removeIf { it.toRevision in revisionIds }
+        //remove all projections having one of the revisions as source
+        projections.removeIf { it.sources.any { source -> source in revisionIds } }
         parts.remove(graph)
         return validate()
     }
@@ -135,6 +145,13 @@ class MultiRevisionSystem(
 
     fun removeRevision(graphId: String, revision: RevisionDescription): Boolean {
         val graph = getGraphById(graphId)
+        //remove all projections having the revision as source
+        projections.removeIf { it.sources.contains(revision.revId) }
+        //remove all relations having the revision as target
+        relations.removeIf { it.toRevision == revision.revId }
+        //remove all relations having the revision as source
+        relations.removeIf { it.fromRevision == revision.revId }
+        //edges in and out are removed automatically within the graph
         graph.removeRevision(revision)
         return validate()
     }

@@ -96,6 +96,21 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     }
 
     override fun removeRevision(vertex: RevisionDescription) {
+        //remove all edges having the vertex as source or target
+        traversal().with(graph)
+            .V()
+            .has(id, vertex.revId)
+            .outE()
+            .toList()
+            .forEach { it.remove() }
+        traversal().with(graph)
+            .V()
+            .has(id, vertex.revId)
+            .inE()
+            .toList()
+            .forEach { it.remove() }
+
+        //remove the vertex itself
         traversal().with(graph)
             .V()
             .has(id, vertex.revId)

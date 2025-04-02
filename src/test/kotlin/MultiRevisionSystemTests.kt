@@ -123,6 +123,7 @@ class MultiRevisionSystemTests {
     @Test
     fun testGetRevisionGraphs() {
         val graphs: Set<RevisionGraph> = setOf(revisionGraphX, revisionGraphY)
+        println(system.serialize())
         assertEquals(graphs, system.getRevisionGraphs())
     }
 
