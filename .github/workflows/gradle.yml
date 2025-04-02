@@ -55,30 +55,10 @@ jobs:
       uses: actions/upload-artifact@v4.6.2
       with:
       # Artifact name
-        name: build
+        name: JAR-build
         # A file, directory or wildcard pattern that describes what to upload
         path: build/libs
         # The desired behavior if no files are found using the provided path.
         retention-days: 30
         overwrite: true
         include-hidden-files: false
-          
-
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-    # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
