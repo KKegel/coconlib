@@ -70,6 +70,7 @@ val revisionSystem: MultiRevisionSystem = MultiRevisionSystem.create(
 ```
 
 ### Creating a Multi-Revision Graph from String 
+We provide the string syntax and examples at the end of this document.
 
 ```kotlin
 val serializedSystem: String = "..." //String description
@@ -95,4 +96,95 @@ val revisionSystem: MultiRevisionSystem = MultiRevisionSystem.create(
 #### Validation
 
 ### Querying a Multi-Revision Graph
+
+#### coconlib String Format
+
+A multi-revision system can be serialized from and two string.
+The syntax is defined by the following template:
+```
+GRAPHS
+G;<GRAPH ID>
+   V;<GRAPH ID>;<REVISION ID>;<DESCRIPTION>;<URI>;<PAYLOAD (opt)>
+   ...
+   E;<START REVISION ID>;<END REVISION ID>;<EDGE TYPE>;<PAYLOAD (opt)>
+   ...
+G;<NEXT GRAPH ID>
+   ...
+RELATIONS
+L;<FROM GRAPH>;<TO GRAPH>;<FROM REVISION ID>;<TO REVISION ID>;
+...
+PROJECTIONS
+P;<PROJECTION ID>;<SOURCE REVISION 1 ID>,<SOURCE REVISION N ID>,...;<PROJECTION NAME>
+...
+```
+where ``<EDGE TYPE> = SUCESSOR|MERGE``
+
+An examplary revision graph could look like this:
+```
+Subsys X
+                   /---> X.g --> X.p
+X.a --> X.b --> X.e --> X.f
+ \---> X.c --> X.h ---\
+  \ ================== > X.j ---> X.k
+   \--> X.d ----------/
+
+Subsys Y
+             /---> Y.x
+ Y.a --> Y.b --> Y.c --> y
+             \---> Y.z
+
+LINKS:
+Y.x -> X.k
+X.p -> Y.z
+
+PROJECTIONS:
+A = X.a + Y.a
+P = X.f
+```
+
+This system conforms to the following serialization:
+```
+GRAPHS
+G;X
+V;X;X.a;X.A;./a;
+V;X;X.b;X.B;./b;
+V;X;X.c;X.C;./c;
+V;X;X.d;X.D;./d;
+V;X;X.e;X.E;./e;
+V;X;X.f;X.F;./f;
+V;X;X.g;X.G;./g;
+V;X;X.h;X.H;./h;
+V;X;X.j;X.J;./j;
+V;X;X.k;X.K;./k;
+V;X;X.p;X.P;./p;
+E;X.a;X.b;SUCCESSOR
+E;X.a;X.c;SUCCESSOR
+E;X.a;X.d;SUCCESSOR
+E;X.a;X.j;MERGE
+E;X.b;X.e;SUCCESSOR
+E;X.c;X.h;SUCCESSOR
+E;X.d;X.j;SUCCESSOR
+E;X.e;X.f;SUCCESSOR
+E;X.e;X.g;SUCCESSOR
+E;X.g;X.p;SUCCESSOR
+E;X.h;X.j;SUCCESSOR
+E;X.j;X.k;SUCCESSOR
+G;Y
+V;Y;Y.a;y.A;./a;
+V;Y;Y.b;y.B;./b;
+V;Y;Y.c;y.C;./c;
+V;Y;Y.x;y.X;./x;
+V;Y;Y.y;y.Y;./y;
+V;Y;Y.z;y.Z;./z;
+E;Y.a;Y.b;SUCCESSOR
+E;Y.b;Y.c;SUCCESSOR
+E;Y.c;Y.x;SUCCESSOR
+E;Y.c;Y.y;SUCCESSOR
+E;Y.c;Y.z;SUCCESSOR
+RELATIONS
+L;X;Y;X.p;Y.z;
+L;Y;X;Y.x;X.k;
+PROJECTIONS
+P;A;X.a,Y.a;A
+```
 
