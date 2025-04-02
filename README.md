@@ -60,10 +60,39 @@ You can either include this repository as a submodule in your project; Use the J
 The following guide is a short introduction to the library.
 We provide extensive KotlinDoc documentation in the source code.
 
-### Creating a Multi-Revision Graph via API
+### Creating an empty Multi-Revision Graph
+```kotlin
+val revisionSystem: MultiRevisionSystem = MultiRevisionSystem.create(
+  setOf<RevisionGraph>(),   //empty set of subsystems
+  setOf<Relation>(),        //empty set of relations
+  setOf<RevisionGraph>(),   //empty set of projections
+)
+```
 
-### Creating a Multi-Revision Graph via Text
+### Creating a Multi-Revision Graph from String 
+
+```kotlin
+val serializedSystem: String = "..." //String description
+val rsd: SystemDescription = SystemDescription.parse(
+  serializedSystem, 
+  TinkerRevisionGraph::build  //use Tinkergraph Graph API as underlying library
+)
+val revisionSystem: MultiRevisionSystem = MultiRevisionSystem.create(
+  rsd.parts,
+  rsd.relations,
+  rsd.projections
+)
+```
 
 ### Editing a Multi-Revision Graph
 
+#### Subsystems
+
+#### Revisions
+
+#### Edges
+
+#### Validation
+
 ### Querying a Multi-Revision Graph
+
