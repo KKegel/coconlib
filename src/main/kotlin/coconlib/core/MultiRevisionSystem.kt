@@ -147,6 +147,15 @@ class MultiRevisionSystem(
         }
     }
 
+    fun addRevisionWithUnification(graphId: String,
+                                   revision: RevisionDescription,
+                                   edgeA: EdgeDescription,
+                                   edgeB: EdgeDescription): Boolean {
+        val graph = getGraphById(graphId)
+        graph.addRevisionWithUnification(revision, edgeA, edgeB)
+        return validate()
+    }
+
     fun removeRevision(graphId: String, revision: RevisionDescription): Boolean {
         val graph = getGraphById(graphId)
         //remove all projections having the revision as source

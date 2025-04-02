@@ -297,6 +297,35 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
         return path
     }
 
+    override fun addRevisionWithUnification(
+        revision: RevisionDescription,
+        edgeA: EdgeDescription,
+        edgeB: EdgeDescription
+    ): Boolean {
+        val predecessorA = transform(getRevision(edgeA.sourceShortId))
+        val predecessorB = transform(getRevision(edgeB.sourceShortId))
+        val leastCommonAncestor = getLeastCommonAncestor(predecessorA.revId, predecessorB.revId)
+        val mergeEdge = EdgeDescription(leastCommonAncestor.revId, revision.revId, EdgeLabel.MERGE)
+        addRevision(revision)
+        addEdge(edgeA)
+        addEdge(edgeB)
+        addEdge(mergeEdge)
+        return true
+    }
+
+
+
+    override fun getLeastCommonAncestor(vertexIdA: String, vertexIdB: String): RevisionDescription {
+        val pathA = getPathToRoot(getRevision(vertexIdA), -1)
+        val pathB = getPathToRoot(getRevision(vertexIdB), -1)
+        for (elem in pathA) {
+            if (pathB.contains(elem)) {
+                return transform(elem)
+            }
+        }
+        throw IllegalArgumentException("No common ancestor of $vertexIdA and $vertexIdB")
+    }
+
     override fun getRevision(revId: String): Vertex {
         return traversal().with(graph)
             .V()

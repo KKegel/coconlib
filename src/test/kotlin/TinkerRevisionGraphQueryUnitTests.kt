@@ -189,6 +189,47 @@ class TinkerRevisionGraphQueryUnitTests {
      *   \--> d --------/
      */
     @Test
+    fun getLeastCommonAncestorTest() {
+        val lca1 = revisionGraph.getLeastCommonAncestor("f", "k")
+        val lca2 = revisionGraph.getLeastCommonAncestor("k", "f")
+        assertEquals("a", lca1.revId)
+        assertEquals("a", lca2.revId)
+    }
+
+    @Test
+    fun getLeastCommonAncestorTestShort() {
+        val lca1 = revisionGraph.getLeastCommonAncestor("p", "f")
+        val lca2 = revisionGraph.getLeastCommonAncestor("f", "p")
+        assertEquals("e", lca1.revId)
+        assertEquals("e", lca2.revId)
+    }
+
+    @Test
+    fun getLeastCommonAncestorTestIdentity() {
+        val lca1 = revisionGraph.getLeastCommonAncestor("f", "f")
+        assertEquals("f", lca1.revId)
+    }
+
+    @Test
+    fun testAddRevisionWithUnification(){
+        val newRevision = RevisionDescription("g1", "x", "X", "./x")
+        val edgeA = EdgeDescription("p", "x", EdgeLabel.SUCCESSOR)
+        val edgeB = EdgeDescription("f", "x", EdgeLabel.SUCCESSOR)
+        revisionGraph.addRevisionWithUnification(newRevision, edgeA, edgeB)
+        assertTrue(revisionGraph.hasRevision(newRevision))
+        val pathX = revisionGraph.getPathToRoot(revisionGraph.getRevision("x"), -1)
+        assertEquals(4, pathX.size)
+        assertEquals(setOf("a", "b", "e", "x"), pathX.map { revisionGraph.transform(it).revId }.toSet())
+    }
+
+    /**
+     *              /---> g --> p
+     * a --> b --> e --> f
+     * \---> c --> h ---\
+     *  \ ============== > j ---> k
+     *   \--> d --------/
+     */
+    @Test
     fun getNeighbours0BoundedTest() {
         val vertex = revisionGraph.getRevision("p")
         val neighbours = revisionGraph.getNeighbors(vertex, 0)

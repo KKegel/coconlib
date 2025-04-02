@@ -32,6 +32,8 @@ abstract class RevisionGraph(val graphId: String) {
     abstract fun getEdge(sourceShortId: String, targetShortId: String): Edge
 
     abstract fun addRevision(vertex: RevisionDescription)
+    abstract fun addRevisionWithUnification(revision: RevisionDescription, edgeA: EdgeDescription,
+                                            edgeB: EdgeDescription): Boolean
     abstract fun addEdge(edge: EdgeDescription)
 
     abstract fun removeRevision(vertex: RevisionDescription)
@@ -54,6 +56,7 @@ abstract class RevisionGraph(val graphId: String) {
     abstract fun getRootRevision(): Vertex
     abstract fun getPathToRoot(vertex: Vertex, pathLength: Int): List<Vertex>
     abstract fun getNeighbors(vertex: Vertex, recursionDepth: Int): Set<Vertex>
+    abstract fun getLeastCommonAncestor(vertexIdA: String, vertexIdB: String): RevisionDescription
 
     abstract fun validate(depth: Int = 7): Boolean
 
