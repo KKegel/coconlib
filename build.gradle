@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.21'
+    id 'java-library-distribution'
 }
 
 group = 'de.kkegel'
@@ -10,9 +11,7 @@ repositories {
 }
 
 dependencies {
-
     implementation 'org.apache.tinkerpop:tinkergraph-gremlin:4.0.0-beta.1'
-
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
@@ -22,3 +21,10 @@ test {
 kotlin {
     jvmToolchain(21)
 }
+
+distributions {
+    main {
+        distributionBaseName = 'coconlib'
+    }
+}
+
