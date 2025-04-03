@@ -30,12 +30,15 @@ data class SystemDescription(val parts: Set<RevisionGraph>,
     companion object {
 
         fun serialize(systemDescription: SystemDescription): String {
-            return "GRAPHS\n" +
+            val serialization = "GRAPHS\n" +
                     systemDescription.parts.joinToString("\n") { it.toDescription().serialize() } + "\n" +
                     "RELATIONS\n" +
                     systemDescription.relations.map { Relation.serialize(it) }.toList().sorted().joinToString("\n") + "\n" +
                     "PROJECTIONS\n" +
                     systemDescription.projections.map { Projection.serialize(it) }.toList().sorted().joinToString("\n")
+            val lines = serialization.split("\n")
+            val nonEmptyLines = lines.filter { it.isNotBlank() && it.isNotEmpty() }
+            return nonEmptyLines.joinToString("\n")
         }
 
         fun parse(serialized: String, graphBuilder: (GraphDescription) -> RevisionGraph): SystemDescription {

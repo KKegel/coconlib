@@ -354,6 +354,9 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
     }
 
     fun hasOnlyOneRoot(): Boolean {
+        if (getRevisions().isEmpty()) {
+            return true
+        }
         val rootVertices = traversal().with(graph)
             .V()
             .hasLabel(REVISION)
