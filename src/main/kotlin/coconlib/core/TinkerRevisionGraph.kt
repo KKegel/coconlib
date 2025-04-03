@@ -362,7 +362,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             .hasLabel(REVISION)
             .not(`__`.inE(EdgeLabel.SUCCESSOR.name))
             .toList()
-        println(rootVertices.map { it.property<String>(id).value() })
+        //println(rootVertices.map { it.property<String>(id).value() })
         return rootVertices.size == 1
     }
 
@@ -382,7 +382,7 @@ class TinkerRevisionGraph(graphId: String) : RevisionGraph(graphId) {
             for (path in paths) {
                 val cycle = path.filter { it == vertex }
                 if (cycle.size > 1) {
-                    println(path)
+                    //println(path)
                     return true
                 }
             }

@@ -29,7 +29,7 @@ class GraphQueryInterface(private val revisionGraph: RevisionGraph) {
         try {
             vertex = revisionGraph.getRevision(revisionShortId)
         } catch (e: Exception) {
-            e.printStackTrace()
+            //e.printStackTrace()
             throw IllegalArgumentException("Revision with short ID $revisionShortId not found")
         }
         return findContext(vertex, contextType, depth)
