@@ -88,14 +88,83 @@ val revisionSystem: MultiRevisionSystem = MultiRevisionSystem.create(
 ### Editing a Multi-Revision Graph
 
 #### Subsystems
+Adding & removing subsystems:
+```kotlin
+//mrs: MultiRevisionSystem
+mrs.initNewGraph("new subsystem name")
+//...
+mrs.removeGraph("deleted sybsystem name)
+```
+Several methods for listing and traversing subsystems are provided. Please have a look at the implementation in ``MultiRevisionSystem.kt``.
 
 #### Revisions
+Adding & removing revisions:
+```kotlin
+//mrs: MultiRevisionSystem
+//predecessors may be null
+val revision = RevisionDescription(graphId, predecessor1Id, predecessor2Id, path)
+//create zero, one, or both incoming edges:
+val successorEdge1 = EdgeDescription(predecessor1, revisionId, EdgeLabel.SUCCESSOR) //optional
+val successorEdge2 = EdgeDescription(predecessor2, revisionId, EdgeLabel.SUCCESSOR) //optional
 
-#### Edges
+//in case of just one predecessor:
+mrs.addRevision(graphId, revision, safe = false)
+mrs.addEdge(graphId, successorEdge1, safe = false)
+mrs.validate() //optional
+
+//in case of two predecessors:
+mrs.addRevisionWithUnification(graphId, revision, successorEdge1, successorEdge2)
+
+//OR DON'T ADD EDGES
+//That's a root revision
+mrs.addRevision(graphId, revision, safe = true)
+```
+Several methods for listing and traversing subsystems are provided. Please have a look at the implementation in ``MultiRevisionSystem.kt``.
 
 #### Validation
+We provide basic validation methods for RevisionGraphs and MultiRevisionGraphs via ``.validate()`` methods.
+Note that these methods cannot find all possible errors. However, the detect common mistakes such as dangling edges, nodes, or cycles of small length.
 
 ### Querying a Multi-Revision Graph
+We provide several methods for querying a MultiRevisionGraph. Save variants of these methods are implemented in ``MultiRevisionSystem.kt``. However, it is possible to access the underlying Tinkergraph strucutre directly via Gremlin queries.
+
+Examples are:
+```kotlin
+//mrs: MultiRevisionSystem
+val edges: List<EdgeDescription> = mrs.findEdges(revisionId)
+val projections: List<Projection> = mrs.findProjections(revisionId)
+val relations: List<Relation> = mrs.findRelations(revisionId)
+
+val revisions = mrs.getParts().first { it.graphId == subsystemName }.getRevisions()
+val relations = mrs.getRelations().filter { it.fromGraph == subsystemName || it.toGraph == subsystemName }
+
+val revision: RevisionDescription = mrs.findRevision(revisionId)
+```
+
+#### Context Queries
+We provide the following interface for querying contexts:
+```kotlin
+findLocalContext(graphId: String, revisionShortId: String, contextType: ContextType, depth: Int): Context
+```
+```kotlin
+findGlobalContext(revisionShortId: String, contextType: ContextType): Context
+```
+where:
+```kotlin
+enum class ContextType {
+    SPACE, TIME, RELATIONAL, PROJECTIVE
+}
+
+data class Context(
+    val contextType: ContextType,
+    val cardinality: Int,
+    val participants: Set<RevisionDescription>
+){
+    companion object {
+        const val UNBOUNDED: Int = -1
+    }
+}
+```
 
 #### coconlib String Format
 
