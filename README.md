@@ -32,9 +32,9 @@ Revisions across different graphs can form *projections*, i.e., views.
 
 *coconlib* is a library for managing revision graphs and multi-revision graphs.
 It provides all core functionality for creating, editing and querying revision graphs and multi-revision graphs.
-The central feature of *coconlib* is the ability to checkout revision contexts.
-Revision contexts are groups of revisions that collaborate in a specific way.
-Examples for contexts are the version history of a revision back to the initial version, or the group of revisions that are
+The central feature of *coconlib* is the ability to checkout revision regions.
+Revision regions are groups of revisions that collaborate in a specific way.
+Examples for regions are the version history of a revision back to the initial version, or the group of revisions that are
 related by a specific semantic relationship.
 
 ## Features
@@ -42,7 +42,7 @@ related by a specific semantic relationship.
 - A central data structure for revision graphs and multi-revision graphs based on the *Apache Tinkerpop* graph model framework.
 - CRUD operations for revision graphs and multi-revision graphs.
 - Serialization and deserialization of multi-revision graphs from and to text.
-- A query interface for retrieving revisions and revision contexts.
+- A query interface for retrieving revisions and revision regions.
 - Different levels of validation for revision graphs.
 - Entry points (hooks) for custom validation, extension and customization.
 
@@ -141,22 +141,22 @@ val relations = mrs.getRelations().filter { it.fromGraph == subsystemName || it.
 val revision: RevisionDescription = mrs.findRevision(revisionId)
 ```
 
-#### Context Queries
-We provide the following interface for querying contexts:
+#### Region Queries
+We provide the following interface for querying regions:
 ```kotlin
-findLocalContext(graphId: String, revisionShortId: String, contextType: ContextType, depth: Int): Context
+findLocalRegion(graphId: String, revisionShortId: String, regionType: RegionType, depth: Int): Region
 ```
 ```kotlin
-findGlobalContext(revisionShortId: String, contextType: ContextType): Context
+findGlobalRegion(revisionShortId: String, regionType: RegionType): Region
 ```
 where:
 ```kotlin
-enum class ContextType {
+enum class RegionType {
     SPACE, TIME, RELATIONAL, PROJECTIVE
 }
 
-data class Context(
-    val contextType: ContextType,
+data class Region(
+    val regionType: RegionType,
     val cardinality: Int,
     val participants: Set<RevisionDescription>
 ){

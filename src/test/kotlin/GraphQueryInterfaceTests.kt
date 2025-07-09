@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import coconlib.context.Context
-import coconlib.context.ContextType
+import coconlib.region.Region
+import coconlib.region.RegionType
 import coconlib.graph.EdgeDescription
 import coconlib.graph.EdgeLabel
 import coconlib.graph.GraphDescription
@@ -98,13 +98,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextUnboundedTime() {
-        val context = graphQueryInterface.findContext("f", ContextType.TIME, Context.UNBOUNDED)
-        assertEquals(ContextType.TIME, context.contextType)
-        assertEquals(Int.MAX_VALUE, context.cardinality)
+    fun testFindRegionUnboundedTime() {
+        val region = graphQueryInterface.findRegion("f", RegionType.TIME, Region.UNBOUNDED)
+        assertEquals(RegionType.TIME, region.regionType)
+        assertEquals(Int.MAX_VALUE, region.cardinality)
         assertEquals(
             setOf("f", "e", "b", "a"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -116,13 +116,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextBoundedTime() {
-        val context = graphQueryInterface.findContext("f", ContextType.TIME, 2)
-        assertEquals(ContextType.TIME, context.contextType)
-        assertEquals(2, context.cardinality)
+    fun testFindRegionBoundedTime() {
+        val region = graphQueryInterface.findRegion("f", RegionType.TIME, 2)
+        assertEquals(RegionType.TIME, region.regionType)
+        assertEquals(2, region.cardinality)
         assertEquals(
             setOf("f", "e", "b"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -134,13 +134,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextUnboundedTimeMergeTraversal() {
-        val context = graphQueryInterface.findContext("k", ContextType.TIME, Context.UNBOUNDED)
-        assertEquals(ContextType.TIME, context.contextType)
-        assertEquals(Int.MAX_VALUE, context.cardinality)
+    fun testFindRegionUnboundedTimeMergeTraversal() {
+        val region = graphQueryInterface.findRegion("k", RegionType.TIME, Region.UNBOUNDED)
+        assertEquals(RegionType.TIME, region.regionType)
+        assertEquals(Int.MAX_VALUE, region.cardinality)
         assertEquals(
             setOf("a", "j", "k"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -152,13 +152,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextUnboundedSpace() {
-        val context = graphQueryInterface.findContext("p", ContextType.SPACE, Context.UNBOUNDED)
-        assertEquals(ContextType.SPACE, context.contextType)
-        assertEquals(Int.MAX_VALUE, context.cardinality)
+    fun testFindRegionUnboundedSpace() {
+        val region = graphQueryInterface.findRegion("p", RegionType.SPACE, Region.UNBOUNDED)
+        assertEquals(RegionType.SPACE, region.regionType)
+        assertEquals(Int.MAX_VALUE, region.cardinality)
         assertEquals(
             setOf("f", "k", "p"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -170,13 +170,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextBoundedSpace0() {
-        val context = graphQueryInterface.findContext("p", ContextType.SPACE, 0)
-        assertEquals(ContextType.SPACE, context.contextType)
-        assertEquals(0, context.cardinality)
+    fun testFindRegionBoundedSpace0() {
+        val region = graphQueryInterface.findRegion("p", RegionType.SPACE, 0)
+        assertEquals(RegionType.SPACE, region.regionType)
+        assertEquals(0, region.cardinality)
         assertEquals(
             setOf("p"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -188,13 +188,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextBoundedSpace1() {
-        val context = graphQueryInterface.findContext("p", ContextType.SPACE, 1)
-        assertEquals(ContextType.SPACE, context.contextType)
-        assertEquals(1, context.cardinality)
+    fun testFindRegionBoundedSpace1() {
+        val region = graphQueryInterface.findRegion("p", RegionType.SPACE, 1)
+        assertEquals(RegionType.SPACE, region.regionType)
+        assertEquals(1, region.cardinality)
         assertEquals(
             setOf("p"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 
@@ -206,13 +206,13 @@ class GraphQueryInterfaceTests {
      *   \--> d --------/
      */
     @Test
-    fun testFindContextBoundedSpace2() {
-        val context = graphQueryInterface.findContext("p", ContextType.SPACE, 2)
-        assertEquals(ContextType.SPACE, context.contextType)
-        assertEquals(2, context.cardinality)
+    fun testFindRegionBoundedSpace2() {
+        val region = graphQueryInterface.findRegion("p", RegionType.SPACE, 2)
+        assertEquals(RegionType.SPACE, region.regionType)
+        assertEquals(2, region.cardinality)
         assertEquals(
             setOf("p", "f"),
-            context.participants.map { it.revId }.toSet()
+            region.participants.map { it.revId }.toSet()
         )
     }
 

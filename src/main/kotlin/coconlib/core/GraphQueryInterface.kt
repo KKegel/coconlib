@@ -16,15 +16,15 @@ package coconlib.core
  *  limitations under the License.
  */
 
-import coconlib.context.Context
-import coconlib.context.ContextType
+import coconlib.region.Region
+import coconlib.region.RegionType
 import coconlib.graph.EdgeDescription
 import coconlib.graph.RevisionDescription
 import org.apache.tinkerpop.gremlin.structure.Vertex
 
 class GraphQueryInterface(private val revisionGraph: RevisionGraph) {
 
-    fun findContext(revisionShortId: String, contextType: ContextType, depth: Int): Context {
+    fun findRegion(revisionShortId: String, regionType: RegionType, depth: Int): Region {
         var vertex: Vertex
         try {
             vertex = revisionGraph.getRevision(revisionShortId)
@@ -32,45 +32,45 @@ class GraphQueryInterface(private val revisionGraph: RevisionGraph) {
             //e.printStackTrace()
             throw IllegalArgumentException("Revision with short ID $revisionShortId not found")
         }
-        return findContext(vertex, contextType, depth)
+        return findRegion(vertex, regionType, depth)
     }
 
-    private fun findContext(vertex: Vertex, contextType: ContextType, depth: Int): Context {
-        if (depth < 0 && depth != Context.UNBOUNDED) {
-            throw IllegalArgumentException("Depth must be greater or equal 0 or Context.UNBOUNDED (-1)")
+    private fun findRegion(vertex: Vertex, regionType: RegionType, depth: Int): Region {
+        if (depth < 0 && depth != Region.UNBOUNDED) {
+            throw IllegalArgumentException("Depth must be greater or equal 0 or Region.UNBOUNDED (-1)")
         }
-        return if (contextType == ContextType.TIME) {
-            findTimeContext(vertex, depth)
-        } else if (contextType == ContextType.SPACE) {
-            findSpaceContext(vertex, depth)
+        return if (regionType == RegionType.TIME) {
+            findTimeRegion(vertex, depth)
+        } else if (regionType == RegionType.SPACE) {
+            findSpaceRegion(vertex, depth)
         } else {
-            throw IllegalArgumentException("Context type $contextType not support by this interface!")
+            throw IllegalArgumentException("Region type $regionType not support by this interface!")
         }
     }
 
-    private fun findTimeContext(vertex: Vertex, depth: Int): Context {
-        val cardinality = if (depth == Context.UNBOUNDED) {
+    private fun findTimeRegion(vertex: Vertex, depth: Int): Region {
+        val cardinality = if (depth == Region.UNBOUNDED) {
             Int.MAX_VALUE
         } else {
             depth
         }
         val revisions = revisionGraph.getPathToRoot(vertex, depth)
-        return Context(
-            ContextType.TIME,
+        return Region(
+            RegionType.TIME,
             cardinality,
             revisions.map { revisionGraph.transform(it) }.toSet()
         )
     }
 
-    private fun findSpaceContext(vertex: Vertex, depth: Int): Context {
-        val cardinality = if (depth == Context.UNBOUNDED) {
+    private fun findSpaceRegion(vertex: Vertex, depth: Int): Region {
+        val cardinality = if (depth == Region.UNBOUNDED) {
             Int.MAX_VALUE
         } else {
             depth
         }
         val neighbors = revisionGraph.getNeighbors(vertex, depth)
-        return Context(
-            ContextType.SPACE,
+        return Region(
+            RegionType.SPACE,
             cardinality,
             neighbors.map { revisionGraph.transform(it) }.toSet()
         )

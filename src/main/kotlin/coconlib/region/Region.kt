@@ -14,8 +14,16 @@
  *  limitations under the License.
  */
 
-package coconlib.context
+package coconlib.region
 
-enum class ContextType {
-    SPACE, TIME, RELATIONAL, PROJECTIVE
+import coconlib.graph.RevisionDescription
+
+data class Region(
+    val regionType: RegionType,
+    val cardinality: Int,
+    val participants: Set<RevisionDescription>
+){
+    companion object {
+        const val UNBOUNDED: Int = -1
+    }
 }

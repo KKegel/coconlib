@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import coconlib.context.Context
-import coconlib.context.ContextType
+import coconlib.region.Region
+import coconlib.region.RegionType
 import coconlib.core.MultiRevisionSystem
 import coconlib.core.RevisionGraph
 import coconlib.core.TinkerRevisionGraph
@@ -158,13 +158,13 @@ class MultiRevisionSystemTests {
     *              P = X.f
     */
     @Test
-    fun testGetSpaceContext(){
-        val context = system.findLocalContext(revisionGraphX.graphId, "X.e", ContextType.SPACE, 1)
-        assertEquals(ContextType.SPACE, context.contextType)
-        assertEquals(1, context.cardinality)
-        //println(context.participants.map { it.revId })
-        assertEquals(3, context.participants.size)
-        assertEquals(setOf("X.p", "X.f", "X.e"), context.participants.map { it.revId }.toSet())
+    fun testGetSpaceRegion(){
+        val region = system.findLocalRegion(revisionGraphX.graphId, "X.e", RegionType.SPACE, 1)
+        assertEquals(RegionType.SPACE, region.regionType)
+        assertEquals(1, region.cardinality)
+        //println(region.participants.map { it.revId })
+        assertEquals(3, region.participants.size)
+        assertEquals(setOf("X.p", "X.f", "X.e"), region.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -185,12 +185,12 @@ class MultiRevisionSystemTests {
     *              P = X.f
     */
     @Test
-    fun testGetTimeContext(){
-        val context = system.findLocalContext(revisionGraphY.graphId, "Y.z", ContextType.TIME, Context.UNBOUNDED)
-        assertEquals(ContextType.TIME, context.contextType)
-        assertEquals(Int.MAX_VALUE, context.cardinality)
-        assertEquals(4, context.participants.size)
-        assertEquals(setOf("Y.a", "Y.b", "Y.c", "Y.z"), context.participants.map { it.revId }.toSet())
+    fun testGetTimeRegion(){
+        val region = system.findLocalRegion(revisionGraphY.graphId, "Y.z", RegionType.TIME, Region.UNBOUNDED)
+        assertEquals(RegionType.TIME, region.regionType)
+        assertEquals(Int.MAX_VALUE, region.cardinality)
+        assertEquals(4, region.participants.size)
+        assertEquals(setOf("Y.a", "Y.b", "Y.c", "Y.z"), region.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -211,21 +211,21 @@ class MultiRevisionSystemTests {
     *              P = X.f
     */
     @Test
-    fun testGetRelationalContext(){
-        val context = system.findGlobalContext("X.p", ContextType.RELATIONAL)
-        assertEquals(ContextType.RELATIONAL, context.contextType)
-        assertEquals(0, context.cardinality)
-        assertEquals(2, context.participants.size)
-        assertEquals(setOf("X.p", "Y.z"), context.participants.map { it.revId }.toSet())
+    fun testGetRelationalRegion(){
+        val region = system.findGlobalRegion("X.p", RegionType.RELATIONAL)
+        assertEquals(RegionType.RELATIONAL, region.regionType)
+        assertEquals(0, region.cardinality)
+        assertEquals(2, region.participants.size)
+        assertEquals(setOf("X.p", "Y.z"), region.participants.map { it.revId }.toSet())
     }
 
     @Test
-    fun testGetRelationalContextUnidirectional(){
-        val context = system.findGlobalContext("Y.z", ContextType.RELATIONAL)
-        assertEquals(ContextType.RELATIONAL, context.contextType)
-        assertEquals(0, context.cardinality)
-        assertEquals(1, context.participants.size)
-        assertEquals(setOf("Y.z"), context.participants.map { it.revId }.toSet())
+    fun testGetRelationalRegionUnidirectional(){
+        val region = system.findGlobalRegion("Y.z", RegionType.RELATIONAL)
+        assertEquals(RegionType.RELATIONAL, region.regionType)
+        assertEquals(0, region.cardinality)
+        assertEquals(1, region.participants.size)
+        assertEquals(setOf("Y.z"), region.participants.map { it.revId }.toSet())
     }
 
     /*
@@ -246,21 +246,21 @@ class MultiRevisionSystemTests {
     *              P = X.f
     */
     @Test
-    fun testGetProjectiveContext(){
-        val context = system.findGlobalContext("X.a", ContextType.PROJECTIVE)
-        assertEquals(ContextType.PROJECTIVE, context.contextType)
-        assertEquals(0, context.cardinality)
-        assertEquals(1, context.participants.size)
-        assertEquals(setOf("A"), context.participants.map { it.revId }.toSet())
+    fun testGetProjectiveRegion(){
+        val region = system.findGlobalRegion("X.a", RegionType.PROJECTIVE)
+        assertEquals(RegionType.PROJECTIVE, region.regionType)
+        assertEquals(0, region.cardinality)
+        assertEquals(1, region.participants.size)
+        assertEquals(setOf("A"), region.participants.map { it.revId }.toSet())
     }
 
     @Test
-    fun testGetProjectiveContextEmpty(){
-        val context = system.findGlobalContext("X.b", ContextType.PROJECTIVE)
-        assertEquals(ContextType.PROJECTIVE, context.contextType)
-        assertEquals(0, context.cardinality)
-        assertEquals(0, context.participants.size)
-        assertEquals(setOf(), context.participants.map { it.revId }.toSet())
+    fun testGetProjectiveRegionEmpty(){
+        val region = system.findGlobalRegion("X.b", RegionType.PROJECTIVE)
+        assertEquals(RegionType.PROJECTIVE, region.regionType)
+        assertEquals(0, region.cardinality)
+        assertEquals(0, region.participants.size)
+        assertEquals(setOf(), region.participants.map { it.revId }.toSet())
     }
 
 }

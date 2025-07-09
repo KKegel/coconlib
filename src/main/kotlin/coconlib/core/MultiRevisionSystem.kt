@@ -16,8 +16,8 @@
 
 package coconlib.core
 
-import coconlib.context.Context
-import coconlib.context.ContextType
+import coconlib.region.Region
+import coconlib.region.RegionType
 import coconlib.graph.EdgeDescription
 import coconlib.graph.RevisionDescription
 import coconlib.system.Relation
@@ -38,25 +38,25 @@ class MultiRevisionSystem(
         }
     }
 
-    fun findLocalContext(graphId: String, revisionShortId: String, contextType: ContextType, depth: Int): Context {
-        if (contextType in listOf(ContextType.PROJECTIVE, ContextType.RELATIONAL)) {
-            throw IllegalArgumentException("Context type $contextType not supported by this method!")
+    fun findLocalRegion(graphId: String, revisionShortId: String, regionType: RegionType, depth: Int): Region {
+        if (regionType in listOf(RegionType.PROJECTIVE, RegionType.RELATIONAL)) {
+            throw IllegalArgumentException("Region type $regionType not supported by this method!")
         }
         val graph = getGraphById(graphId)
-        return GraphQueryInterface(graph).findContext(revisionShortId, contextType, depth)
+        return GraphQueryInterface(graph).findRegion(revisionShortId, regionType, depth)
     }
 
-    fun findGlobalContext(revisionShortId: String, contextType: ContextType): Context {
-        return if (contextType == ContextType.RELATIONAL) {
-            getRelationalContext(revisionShortId)
-        } else if (contextType == ContextType.PROJECTIVE) {
-            getProjectiveContext(revisionShortId)
+    fun findGlobalRegion(revisionShortId: String, regionType: RegionType): Region {
+        return if (regionType == RegionType.RELATIONAL) {
+            getRelationalRegion(revisionShortId)
+        } else if (regionType == RegionType.PROJECTIVE) {
+            getProjectiveRegion(revisionShortId)
         } else {
-            throw IllegalArgumentException("Context type $contextType not supported by this method!")
+            throw IllegalArgumentException("Region type $regionType not supported by this method!")
         }
     }
 
-    private fun getRelationalContext(revisionShortId: String): Context {
+    private fun getRelationalRegion(revisionShortId: String): Region {
         val revisionIds = mutableSetOf<String>(revisionShortId)
         for (relation in relations) {
             if (relation.fromRevision == revisionShortId) {
@@ -64,12 +64,12 @@ class MultiRevisionSystem(
             }
         }
         val vertices: Set<RevisionDescription> = revisionIds.map { findRevision(it) }.toSet()
-        return Context(ContextType.RELATIONAL, 0, vertices)
+        return Region(RegionType.RELATIONAL, 0, vertices)
     }
 
-    private fun getProjectiveContext(revisionShortId: String): Context {
+    private fun getProjectiveRegion(revisionShortId: String): Region {
         val targets = projections.filter { it.sources.contains(revisionShortId) }
-        return Context(ContextType.PROJECTIVE, 0, targets.map {
+        return Region(RegionType.PROJECTIVE, 0, targets.map {
             RevisionDescription(Projection.PROJECTION, it.projectionId, Projection.PROJECTION, it.target) }.toSet())
     }
 
